@@ -6,8 +6,9 @@ namespace Data.Entity.Base
 {
     public class PersonBase : BaseEntity
     {
-        public string Name { get; set; }
-        public string Surname { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public virtual string FullName => $"{FirstName} {LastName}";    //QOL field
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         

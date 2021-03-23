@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Data.Entity
 {
-    class Reservation : BaseEntity
+    public class Reservation : BaseEntity
     {
-        public Room ReservedRoom { get; set; }
-        public Employee EmployeeCreator { get; set; }
-        public ICollection<Customer> Customers { get; set; }
+        public virtual Room ReservedRoom { get; set; }
+        public virtual Employee EmployeeCreator { get; set; }
+        public virtual ICollection<Customer> Customers { get; set; }
         public DateTime Arrival { get; set; }
         public DateTime Departure { get; set; }
         public bool BreakfastIncluded { get; set; }

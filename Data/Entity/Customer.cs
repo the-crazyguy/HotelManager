@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Data.Entity
 {
-    class Customer : PersonBase
+    public class Customer : PersonBase
     {
         public bool IsAdult { get; set; }
     }
