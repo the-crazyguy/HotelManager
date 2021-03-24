@@ -10,7 +10,6 @@ namespace Data
 {
     public class HotelDb : IdentityDbContext<IdentityUser>
     {
-        //TODO: Add DbSets
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Reservation> Reservations { get; set; }
