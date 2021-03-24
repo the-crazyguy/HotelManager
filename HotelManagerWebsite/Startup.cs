@@ -1,4 +1,5 @@
 using Data;
+using Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,6 +32,10 @@ namespace HotelManagerWebsite
 
             //TODO: Add Dependency Injection here
             //services.AddScoped</*Interface*/, /*Class that implements said interface*/>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IReservationRepository, ReservationRepository>();
+            services.AddScoped<IRoomRepository, RoomRepository>();
 
             services.AddHttpContextAccessor();
             services.AddSession();  //TODO: Remove if sessions are not needed

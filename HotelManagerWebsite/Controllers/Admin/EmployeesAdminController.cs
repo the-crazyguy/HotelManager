@@ -46,7 +46,7 @@ namespace HotelManagerWebsite.Controllers.Admin
                 (emptyEmail || item.Email.Contains(model.Filter.Email)));
 
             //5. Build view model object
-            model.Pager.Pages = (int)Math.Ceiling((double)model.Items.Count() / model.Pager.ItemsPerPage);
+            model.Pager.Pages = (int)Math.Ceiling((double)employees.Count() / model.Pager.ItemsPerPage);
 
             employees = employees.OrderBy(item => item.Id)
                 .Skip((model.Pager.CurrentPage - 1) * model.Pager.ItemsPerPage)
