@@ -15,7 +15,7 @@ namespace Data.Entity
         public virtual ICollection<Reservation> Reservations { get; set; }
         public DateTime Hired { get; set; }
         public bool IsActive { get; set; }
-        public DateTime Fired { get; set; }
+        public DateTime? Fired { get; set; }
 
     }
 }

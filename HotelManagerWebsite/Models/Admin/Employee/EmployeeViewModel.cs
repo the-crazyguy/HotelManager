@@ -16,6 +16,6 @@ namespace HotelManagerWebsite.Models.Admin.Employee
         public ICollection<ReservationViewModel> Reservations { get; set; } 
         public DateTime Hired { get; set; }
         public bool IsActive { get; set; }
-        public DateTime Fired { get; set; }
+        public DateTime? Fired { get; set; }
     }
 }
