@@ -1,1 +1,74 @@
-﻿<h1>Hi</h1>
+﻿@model EmployeeIndexViewModel
+
+<h1>Employees</h1>
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header d-flex">
+            @using (Html.BeginForm("Index", "EmployeesAdmin", FormMethod.Get, new { @class = "navbar-search col-10" }))
+            {
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Filter.Username, new { placeholder = "Username" })
+                </div>
+                <button class="btn btn-primary">
+                    Filter
+                </button>
+            }
+            <div class="col-2">
+                <a href="@Url.Action("Edit", "EmplyeesAdmin")" class="btn btn-success">
+                    Create
+                </a>
+            </div>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Active</th>
+                        <th>Reservations</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.FullName</td>
+                            <td>@item.Username</td>
+                            <td>@item.Email</td>
+                            <td>@(item.IsActive ? "&#10003;" : "&#10540;")</td>
+                            <td>@item.Reservations.Count()</td>
+                            <td>
+                                <a href="@Url.Action("Details", "EmployeesAdmin", new { Id = item.Id })" class="btn btn-info">Details</a>
+                                <a href="@Url.Action("Edit", "EmployeesAdmin", new { Id = item.Id })" class="btn btn-info">Edit</a>
+                                <a href="@Url.Action("Delete", "EmployeesAdmin", new { Id = item.Id })" class="btn btn-info">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.Pager.Pages; i++)
+                {
+                    <li class="page-item @(i == Model.Pager.CurrentPage ? "active" : "")">
+                        <a asp-route-Filter.FirstName="@Model.Filter.FirstName"
+                           asp-route-Filter.MiddleName="@Model.Filter.MiddleName"
+                           asp-route-Filter.LastName="@Model.Filter.LastName"
+                           asp-route-Filter.Username="@Model.Filter.Username"
+                           asp-route-Filter.Email="@Model.Filter.Email"
+                           asp-route-Pager.CurrentPage="@i"
+                           class="page-link">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+    </div>
+</div>

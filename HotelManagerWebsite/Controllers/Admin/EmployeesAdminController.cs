@@ -33,15 +33,17 @@ namespace HotelManagerWebsite.Controllers.Admin
 
             //3. Check if the filter is active
             bool emptyUsername = string.IsNullOrWhiteSpace(model.Filter.Username);
-            bool emptyFirstName = string.IsNullOrWhiteSpace(model.Filter.Username);
-            bool emptyLastName = string.IsNullOrWhiteSpace(model.Filter.Username);
-            bool emptyEmail = string.IsNullOrWhiteSpace(model.Filter.Username);
+            bool emptyFirstName = string.IsNullOrWhiteSpace(model.Filter.FirstName);
+            bool emptyMiddleName = string.IsNullOrWhiteSpace(model.Filter.MiddleName);
+            bool emptyLastName = string.IsNullOrWhiteSpace(model.Filter.LastName);
+            bool emptyEmail = string.IsNullOrWhiteSpace(model.Filter.Email);
 
             //4. Query
             IQueryable<Employee> employees = _employeeRepository.Items
                 .Where(item =>
                 (emptyUsername || item.Username.Contains(model.Filter.Username)) &&
                 (emptyFirstName || item.FirstName.Contains(model.Filter.FirstName)) &&
+                (emptyMiddleName || item.MiddleName.Contains(model.Filter.MiddleName)) &&
                 (emptyLastName || item.LastName.Contains(model.Filter.LastName)) &&
                 (emptyEmail || item.Email.Contains(model.Filter.Email)));
 
