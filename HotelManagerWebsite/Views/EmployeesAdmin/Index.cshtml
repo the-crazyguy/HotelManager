@@ -36,19 +36,20 @@
                 <tbody>
                     @foreach (var item in Model.Items)
                     {
-                        <tr>
-                            <td>@item.Id</td>
-                            <td>@item.FullName</td>
-                            <td>@item.Username</td>
-                            <td>@item.Email</td>
-                            <td>@(item.IsActive ? "&#10003;" : "&#10540;")</td>
-                            <td>@item.Reservations.Count()</td>
-                            <td>
-                                <a href="@Url.Action("Details", "EmployeesAdmin", new { Id = item.Id })" class="btn btn-info">Details</a>
-                                <a href="@Url.Action("Edit", "EmployeesAdmin", new { Id = item.Id })" class="btn btn-info">Edit</a>
-                                <a href="@Url.Action("Delete", "EmployeesAdmin", new { Id = item.Id })" class="btn btn-info">Delete</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.FullName</td>
+                        <td>@item.Username</td>
+                        <td>@item.Email</td>
+                        @*HACK: putting unicode/hex/html code, html entity and css code does not work with the ternary operator*@
+                        <td>@(item.IsActive ? "✔" : "❌")</td>
+                        <td>@item.Reservations.Count()</td>
+                        <td>
+                            <a href="@Url.Action("Details", "EmployeesAdmin", new { Id = item.Id })" class="btn btn-info">Details</a>
+                            <a href="@Url.Action("Edit", "EmployeesAdmin", new { Id = item.Id })" class="btn btn-info">Edit</a>
+                            <a href="@Url.Action("Delete", "EmployeesAdmin", new { Id = item.Id })" class="btn btn-info">Delete</a>
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>
