@@ -12,6 +12,7 @@ namespace Data.Entity
         public string MiddleName { get; set; }
         public override string FullName => $"{base.FirstName} {MiddleName} {base.LastName}";    //QOL field
         public string EGN { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; }
         public DateTime Hired { get; set; }
         public bool IsActive { get; set; }
         public DateTime Fired { get; set; }

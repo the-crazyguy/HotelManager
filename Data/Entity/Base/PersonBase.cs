@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Data.Entity.Base
 {
-    public class PersonBase : BaseEntity
+    public abstract class PersonBase : BaseEntity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
