@@ -21,6 +21,7 @@ namespace HotelManagerWebsite.Controllers.Admin
             _employeeRepository = employeeRepository;
         }
 
+        [HttpGet]
         public IActionResult Index(EmployeeIndexViewModel model)
         {
             //1. Initialize pager
@@ -104,6 +105,71 @@ namespace HotelManagerWebsite.Controllers.Admin
                 IsActive = item.IsActive,
                 Fired = item.Fired
             });
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            Employee employee = _employeeRepository.Items.FirstOrDefault(item => item.Id == id);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            EmployeeViewModel model = new EmployeeViewModel()
+            {
+                Id = employee.Id,
+                FirstName = employee.FirstName,
+                MiddleName = employee.MiddleName,
+                LastName = employee.LastName,
+                Username = employee.Username,
+                Password = employee.Password,
+                Email = employee.Email,
+                PhoneNumber = employee.PhoneNumber,
+                EGN = employee.EGN,
+                Reservations = employee.Reservations.Select(res => new ReservationViewModel()
+                {
+                    Id = res.Id,
+                    RoomId = res.RoomId,
+                    Room = new RoomViewModel()
+                    {
+                        Id = res.Room.Id
+                        //TODO: Finish RoomVM
+                    },
+                    CreatorId = res.CreatorId,
+                    Creator = new EmployeeViewModel()
+                    {
+                        Id = res.Creator.Id,
+                        FirstName = res.Creator.FirstName,
+                        MiddleName = res.Creator.MiddleName,
+                        LastName = res.Creator.LastName,
+                        Username = res.Creator.Username,
+                        Email = res.Creator.Email,
+                        PhoneNumber = res.Creator.PhoneNumber
+                    },
+                    Customers = res.Customers.Select(c => new CustomerViewModel()
+                    {
+                        Id = c.Id,
+                        FirstName = c.FirstName,
+                        LastName = c.LastName,
+                        Email = c.Email,
+                        PhoneNumber = c.PhoneNumber
+                        //TODO: Finish CustomerVM
+                    }).ToList(),
+                    Arrival = res.Arrival,
+                    Departure = res.Departure,
+                    BreakfastIncluded = res.BreakfastIncluded,
+                    IsAllInclusive = res.IsAllInclusive,
+                    TotalSum = res.TotalSum
+                }).ToList(),
+                Hired = employee.Hired,
+                IsActive = employee.IsActive,
+                Fired = employee.Fired
+
+            };
 
             return View(model);
         }

@@ -1,0 +1,49 @@
+﻿@model EmployeeViewModel
+@{
+    ViewData["Title"] = "Employee Details";
+}
+
+<h1>@Model.FullName</h1>
+
+<div>
+    <label>Id: </label> <span>@Model.Id</span>
+</div>
+<div>
+    <label>First name: </label> <span>@Model.FirstName</span>
+</div>
+<div>
+    <label>Middle name: </label> <span>@Model.MiddleName</span>
+</div>
+<div>
+    <label>Last name: </label> <span>@Model.LastName</span>
+</div>
+<div>
+    <label>Username: </label> <span>@Model.Username</span>
+</div>
+<div>
+    <label>Email: </label> <span>@Model.Email</span>
+</div>
+<div>
+    <label>Phone number: </label> <span>@Model.PhoneNumber</span>
+</div>
+<div>
+    <label>EGN: </label> <span>@Model.EGN</span>
+</div>
+<div>
+    <label>Hired: </label> <span>@Model.Hired.ToString("d")</span>
+</div>
+<div>
+    <label>Active: </label> <span>@(Model.IsActive ? "✔" : "❌")</span>
+</div>
+
+@if (Model.Fired != null)
+{
+    <div>
+        <label>Fired: </label> <span></span>
+    </div>
+}
+
+<h3>Reservations</h3>
+<div>
+
+</div>

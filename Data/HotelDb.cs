@@ -43,7 +43,7 @@ namespace Data
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
             //TODO: Create db on your own machine and paste the connection string here
-            builder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=HotelDb;Integrated Security=True;");
+            builder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=HotelDb;Integrated Security=True;MultipleActiveResultSets=true");
             builder.UseLazyLoadingProxies();
         }
 
