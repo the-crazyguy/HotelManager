@@ -1,0 +1,26 @@
+﻿@model ReservationViewModel
+
+<div>
+    <label>Id: </label> <span>@Model.Id</span>
+</div>
+<div>
+    @*TODO: Make ReservationsController*@
+    <a asp-controller="Reservations" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary">Go to reservation</a>
+</div>
+<div>
+    <label>Room Id: </label> <span>@Model.RoomId</span>
+</div>
+<div>
+    @*TODO: Make RoomsController*@
+    <a asp-controller="Rooms" asp-action="Details" asp-route-id="@Model.RoomId" class="btn btn-primary">Go to room</a> 
+</div>
+<div>
+    <label>Arrival: </label> <span>@Model.Arrival.ToString("d")</span>
+</div>
+<div>
+    <label>Departure: </label> <span>@Model.Departure.ToString("d")</span>
+</div>
+<div>
+    <label>Total Sum: </label> <span>$@Model.TotalSum</span>
+</div>
+

@@ -39,11 +39,14 @@
 @if (Model.Fired != null)
 {
     <div>
-        <label>Fired: </label> <span></span>
+        <label>Fired: </label> <span>@Model.Fired.ToString()</span>
     </div>
 }
 
 <h3>Reservations</h3>
 <div>
-
+    @foreach (var item in Model.Reservations)
+    {
+        @await Html.PartialAsync("../Reservations/_ReservationPartial", item);
+    }
 </div>
