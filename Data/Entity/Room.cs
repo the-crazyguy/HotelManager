@@ -13,6 +13,6 @@ namespace Data.Entity
         public virtual Reservation Reservation { get; set; }
         public double AdultBedPrice { get; set; }
         public double ChildBedPrice { get; set; }
-        public int RoomId { get; set; }
+        public int RoomNumber { get; set; }
     }
 }
