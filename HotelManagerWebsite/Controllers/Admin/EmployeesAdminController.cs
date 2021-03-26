@@ -185,7 +185,10 @@ namespace HotelManagerWebsite.Controllers.Admin
                 //Employee wasn't found so we want to add one
                 model = new EmployeeEditViewModel()
                 {
-                    Id = 0
+                    Id = 0,
+                    Reservations = new List<Reservation>(),
+                    Hired = DateTime.Now,
+                    IsActive = true
                 };
             }
             else
@@ -211,6 +214,8 @@ namespace HotelManagerWebsite.Controllers.Admin
             return View(model);
         }
 
+        //TODO: Fix DateTime being set to 01.01.0001 and IsActive to False when the model is recieved from the form submission
+        //      ???
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(EmployeeEditViewModel model)
@@ -220,7 +225,7 @@ namespace HotelManagerWebsite.Controllers.Admin
                 return View(model);
             }
 
-            Employee employee = new Employee()
+            _employeeRepository.AddOrUpdate(new Employee()
             {
                 Id = model.Id,
                 FirstName = model.FirstName,
@@ -231,13 +236,11 @@ namespace HotelManagerWebsite.Controllers.Admin
                 Email = model.Email,
                 PhoneNumber = model.PhoneNumber,
                 EGN = model.EGN,
-                Reservations = (model.Id == 0 ? new List<Reservation>() : model.Reservations),
-                Hired = (model.Id == 0 ? DateTime.Now : model.Hired),
+                Reservations = model.Reservations,
+                Hired = model.Hired,
                 IsActive = model.IsActive,
                 Fired = model.Fired
-            };
-
-            _employeeRepository.AddOrUpdate(employee);
+            });
 
             return RedirectToAction("Index");
         }
