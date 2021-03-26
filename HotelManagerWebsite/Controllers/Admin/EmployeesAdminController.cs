@@ -173,5 +173,73 @@ namespace HotelManagerWebsite.Controllers.Admin
 
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            Employee employee = _employeeRepository.Items.FirstOrDefault(item => item.Id == id);
+            EmployeeEditViewModel model;
+
+            if (employee == null)
+            {
+                //Employee wasn't found so we want to add one
+                model = new EmployeeEditViewModel()
+                {
+                    Id = 0
+                };
+            }
+            else
+            {
+                model = new EmployeeEditViewModel()
+                {
+                    Id = employee.Id,
+                    FirstName = employee.FirstName,
+                    MiddleName = employee.MiddleName,
+                    LastName = employee.LastName,
+                    Username = employee.Username,
+                    Password = employee.Password,
+                    Email = employee.Email,
+                    PhoneNumber = employee.PhoneNumber,
+                    EGN = employee.EGN,
+                    Reservations = employee.Reservations,
+                    Hired = employee.Hired,
+                    IsActive = employee.IsActive,
+                    Fired = employee.Fired
+                };
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(EmployeeEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            Employee employee = new Employee()
+            {
+                Id = model.Id,
+                FirstName = model.FirstName,
+                MiddleName = model.MiddleName,
+                LastName = model.LastName,
+                Username = model.Username,
+                Password = model.Password,
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber,
+                EGN = model.EGN,
+                Reservations = (model.Id == 0 ? new List<Reservation>() : model.Reservations),
+                Hired = (model.Id == 0 ? DateTime.Now : model.Hired),
+                IsActive = model.IsActive,
+                Fired = model.Fired
+            };
+
+            _employeeRepository.AddOrUpdate(employee);
+
+            return RedirectToAction("Index");
+        }
     }
 }
