@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Data.Entity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -60,6 +61,30 @@ namespace HotelManagerWebsite.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [Display(Name = "First name")]
+            public string FirstName { get; set; }
+            
+            [Display(Name = "Middle name")]
+            public string MiddleName { get; set; }
+
+            [Required]
+            [Display(Name = "Last name")]
+            public string LastName { get; set; }
+
+            [Display(Name = "Username")]
+            public string Username { get; set; }
+
+            [Required]
+            [RegularExpression("^[0-9]{10}$", ErrorMessage = "Phone number must contain only numbers and be 10 characters long")]
+            [Display(Name = "Phone number")]
+            public string PhoneNumber { get; set; }
+            
+            [Required]
+            [RegularExpression("^[0-9]{10}$", ErrorMessage = "EGN must contain 10 numbers")]
+            [Display(Name = "EGN")]
+            public string EGN { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -74,7 +99,19 @@ namespace HotelManagerWebsite.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new EmployeeUser 
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    FirstName = Input.FirstName,
+                    MiddleName = Input.MiddleName,
+                    LastName = Input.LastName,
+                    PhoneNumber = Input.PhoneNumber,
+                    EGN = Input.EGN,
+                    IsActive = true,
+                    Hired = DateTime.Now,
+                    Reservations = new List<Reservation>()
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
