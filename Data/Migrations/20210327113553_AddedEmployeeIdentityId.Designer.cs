@@ -4,14 +4,16 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(HotelDb))]
-    partial class HotelDbModelSnapshot : ModelSnapshot
+    [Migration("20210327113553_AddedEmployeeIdentityId")]
+    partial class AddedEmployeeIdentityId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,6 +75,9 @@ namespace Data.Migrations
                     b.Property<DateTime>("Hired")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("IdentityId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -115,9 +120,6 @@ namespace Data.Migrations
                     b.Property<DateTime>("Departure")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("EmployeeUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<bool>("IsAllInclusive")
                         .HasColumnType("bit");
 
@@ -130,8 +132,6 @@ namespace Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
-
-                    b.HasIndex("EmployeeUserId");
 
                     b.HasIndex("RoomId")
                         .IsUnique();
@@ -232,10 +232,6 @@ namespace Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
@@ -287,8 +283,6 @@ namespace Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -371,34 +365,6 @@ namespace Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Data.Entity.EmployeeUser", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("EGN")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Fired")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Hired")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MiddleName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("EmployeeUser");
-                });
-
             modelBuilder.Entity("Data.Entity.Customer", b =>
                 {
                     b.HasOne("Data.Entity.Reservation", "Reservation")
@@ -415,10 +381,6 @@ namespace Data.Migrations
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Data.Entity.EmployeeUser", null)
-                        .WithMany("Reservations")
-                        .HasForeignKey("EmployeeUserId");
 
                     b.HasOne("Data.Entity.Room", "Room")
                         .WithOne("Reservation")

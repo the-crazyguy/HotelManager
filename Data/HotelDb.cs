@@ -14,6 +14,7 @@ namespace Data
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
+        public virtual DbSet<EmployeeUser> EmployeeUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
