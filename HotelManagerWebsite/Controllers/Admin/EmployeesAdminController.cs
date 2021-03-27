@@ -55,56 +55,57 @@ namespace HotelManagerWebsite.Controllers.Admin
                 .Skip((model.Pager.CurrentPage - 1) * model.Pager.ItemsPerPage)
                 .Take(model.Pager.ItemsPerPage);
 
-            model.Items = employees.Select(item => new EmployeeViewModel()
-            {
-                Id = item.Id,
-                FirstName = item.FirstName,
-                MiddleName = item.MiddleName,
-                LastName = item.LastName,
-                Username = item.Username,
-                Password = item.Password,
-                Email = item.Email,
-                PhoneNumber = item.PhoneNumber,
-                EGN = item.EGN,
-                Reservations = item.Reservations.Select(res => new ReservationViewModel()
-                {
-                    Id = res.Id,
-                    RoomId = res.RoomId,
-                    Room = new RoomViewModel()
-                    {
-                        Id = res.Room.Id
-                        //TODO: Finish RoomVM
-                    },
-                    CreatorId = res.CreatorId,
-                    Creator = new EmployeeViewModel()
-                    {
-                        Id = res.Creator.Id,
-                        FirstName = res.Creator.FirstName,
-                        MiddleName = res.Creator.MiddleName,
-                        LastName = res.Creator.LastName,
-                        Username = res.Creator.Username,
-                        Email = res.Creator.Email,
-                        PhoneNumber = res.Creator.PhoneNumber
-                    },
-                    Customers = res.Customers.Select(c => new CustomerViewModel()
-                    {
-                        Id = c.Id,
-                        FirstName = c.FirstName,
-                        LastName = c.LastName,
-                        Email = c.Email,
-                        PhoneNumber = c.PhoneNumber
-                        //TODO: Finish CustomerVM
-                    }).ToList(),
-                    Arrival = res.Arrival,
-                    Departure = res.Departure,
-                    BreakfastIncluded = res.BreakfastIncluded,
-                    IsAllInclusive = res.IsAllInclusive,
-                    TotalSum = res.TotalSum
-                }).ToList(),
-                Hired = item.Hired,
-                IsActive = item.IsActive,
-                Fired = item.Fired
-            });
+            //TODO: Remove or rework
+            //model.Items = employees.Select(item => new EmployeeViewModel()
+            //{
+            //    Id = item.Id,
+            //    FirstName = item.FirstName,
+            //    MiddleName = item.MiddleName,
+            //    LastName = item.LastName,
+            //    Username = item.Username,
+            //    Password = item.Password,
+            //    Email = item.Email,
+            //    PhoneNumber = item.PhoneNumber,
+            //    EGN = item.EGN,
+            //    Reservations = item.Reservations.Select(res => new ReservationViewModel()
+            //    {
+            //        Id = res.Id,
+            //        RoomId = res.RoomId,
+            //        Room = new RoomViewModel()
+            //        {
+            //            Id = res.Room.Id
+            //            //TODO: Finish RoomVM
+            //        },
+            //        CreatorId = res.CreatorId,
+            //        Creator = new EmployeeViewModel()
+            //        {
+            //            Id = res.Creator.Id,
+            //            FirstName = res.Creator.FirstName,
+            //            MiddleName = res.Creator.MiddleName,
+            //            LastName = res.Creator.LastName,
+            //            Username = res.Creator.Username,
+            //            Email = res.Creator.Email,
+            //            PhoneNumber = res.Creator.PhoneNumber
+            //        },
+            //        Customers = res.Customers.Select(c => new CustomerViewModel()
+            //        {
+            //            Id = c.Id,
+            //            FirstName = c.FirstName,
+            //            LastName = c.LastName,
+            //            Email = c.Email,
+            //            PhoneNumber = c.PhoneNumber
+            //            //TODO: Finish CustomerVM
+            //        }).ToList(),
+            //        Arrival = res.Arrival,
+            //        Departure = res.Departure,
+            //        BreakfastIncluded = res.BreakfastIncluded,
+            //        IsAllInclusive = res.IsAllInclusive,
+            //        TotalSum = res.TotalSum
+            //    }).ToList(),
+            //    Hired = item.Hired,
+            //    IsActive = item.IsActive,
+            //    Fired = item.Fired
+            //});
 
             return View(model);
         }
@@ -139,17 +140,18 @@ namespace HotelManagerWebsite.Controllers.Admin
                         Id = res.Room.Id
                         //TODO: Finish RoomVM
                     },
-                    CreatorId = res.CreatorId,
-                    Creator = new EmployeeViewModel()
-                    {
-                        Id = res.Creator.Id,
-                        FirstName = res.Creator.FirstName,
-                        MiddleName = res.Creator.MiddleName,
-                        LastName = res.Creator.LastName,
-                        Username = res.Creator.Username,
-                        Email = res.Creator.Email,
-                        PhoneNumber = res.Creator.PhoneNumber
-                    },
+                    //TODO: Remove or rework
+                    //CreatorId = res.CreatorId,
+                    //Creator = new EmployeeViewModel()
+                    //{
+                    //    Id = res.Creator.Id,
+                    //    FirstName = res.Creator.FirstName,
+                    //    MiddleName = res.Creator.MiddleName,
+                    //    LastName = res.Creator.LastName,
+                    //    Username = res.Creator.Username,
+                    //    Email = res.Creator.Email,
+                    //    PhoneNumber = res.Creator.PhoneNumber
+                    //},
                     Customers = res.Customers.Select(c => new CustomerViewModel()
                     {
                         Id = c.Id,

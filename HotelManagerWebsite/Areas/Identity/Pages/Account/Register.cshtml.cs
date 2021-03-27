@@ -24,13 +24,16 @@ namespace HotelManagerWebsite.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
+            _roleManager = roleManager;
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
@@ -89,6 +92,15 @@ namespace HotelManagerWebsite.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            if (!await _roleManager.RoleExistsAsync(WebConstants.AdminRole))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(WebConstants.AdminRole));
+            }
+            else if (!await _roleManager.RoleExistsAsync(WebConstants.EmployeeRole))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(WebConstants.EmployeeRole));
+            }
+
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -112,9 +124,23 @@ namespace HotelManagerWebsite.Areas.Identity.Pages.Account
                     Hired = DateTime.Now,
                     Reservations = new List<Reservation>()
                 };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    if (User.IsInRole(WebConstants.AdminRole))
+                    {
+                        //An admin is logged in and they want to create a new admin user
+                        await _userManager.AddToRoleAsync(user, WebConstants.AdminRole);
+                    }
+                    else
+                    {
+                        //TODO: Disallow employees to make their own accounts?
+                        //If the logged in user is not an admin, then they create a regular employee role
+                        await _userManager.AddToRoleAsync(user, WebConstants.EmployeeRole);
+                    }
+
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

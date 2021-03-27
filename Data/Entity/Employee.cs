@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Data.Entity
 {
+    //TODO: Remove redundant class
     public class Employee : PersonBase
     {
         public string Username { get; set; }

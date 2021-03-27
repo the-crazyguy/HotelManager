@@ -39,7 +39,10 @@ namespace HotelManagerWebsite
 
             services.AddHttpContextAccessor();
             services.AddSession();  //TODO: Remove if sessions are not needed
-            services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<HotelDb>();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddDefaultTokenProviders()
+                .AddDefaultUI()
+                .AddEntityFrameworkStores<HotelDb>();
             services.AddRazorPages();
 
             services.Configure<IdentityOptions>(options =>

@@ -9,8 +9,8 @@ namespace Data.Entity
     {
         public int RoomId { get; set; }
         public virtual Room Room { get; set; }
-        public int CreatorId { get; set; }
-        public virtual Employee Creator { get; set; }
+        public string CreatorId { get; set; }
+        public virtual EmployeeUser Creator { get; set; }
         public virtual ICollection<Customer> Customers { get; set; }
         public DateTime Arrival { get; set; }
         public DateTime Departure { get; set; }

@@ -21,9 +21,9 @@ namespace Data
             base.OnModelCreating(modelBuilder);
 
             //TODO: Work out if these are correct
-            //Reservation between Empoyee and Reservation
-            modelBuilder.Entity<Employee>()
-                .HasMany(e => e.Reservations)
+            //Reservation between EmpoyeeUser and Reservation
+            modelBuilder.Entity<EmployeeUser>()
+                .HasMany(eu => eu.Reservations)
                 .WithOne(r => r.Creator)
                 .HasForeignKey(r => r.CreatorId);
 
