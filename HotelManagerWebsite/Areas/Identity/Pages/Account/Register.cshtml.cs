@@ -20,15 +20,15 @@ namespace HotelManagerWebsite.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<EmployeeUser> _signInManager;
+        private readonly UserManager<EmployeeUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<EmployeeUser> userManager,
+            SignInManager<EmployeeUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager)
@@ -128,10 +128,12 @@ namespace HotelManagerWebsite.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+
                     if (User.IsInRole(WebConstants.AdminRole))
                     {
                         //An admin is logged in and they want to create a new admin user
                         await _userManager.AddToRoleAsync(user, WebConstants.AdminRole);
+
                     }
                     else
                     {

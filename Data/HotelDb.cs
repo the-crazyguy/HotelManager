@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Data
 {
-    public class HotelDb : IdentityDbContext<IdentityUser>
+    public class HotelDb : IdentityDbContext<EmployeeUser>
     {
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }

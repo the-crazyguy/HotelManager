@@ -1,4 +1,5 @@
 using Data;
+using Data.Entity;
 using Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,7 +40,7 @@ namespace HotelManagerWebsite
 
             services.AddHttpContextAccessor();
             services.AddSession();  //TODO: Remove if sessions are not needed
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<EmployeeUser, IdentityRole>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<HotelDb>();
