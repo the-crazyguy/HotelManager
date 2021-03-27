@@ -4,6 +4,7 @@ using HotelManagerWebsite.Models;
 using HotelManagerWebsite.Models.Admin.Employee;
 using HotelManagerWebsite.Models.Filters;
 using HotelManagerWebsite.Models.Utility;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,12 @@ namespace HotelManagerWebsite.Controllers.Admin
     public class EmployeesAdminController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public EmployeesAdminController(IEmployeeRepository employeeRepository)
+        public EmployeesAdminController(IEmployeeRepository employeeRepository, UserManager<IdentityUser> userManager)
         {
             _employeeRepository = employeeRepository;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -225,7 +228,7 @@ namespace HotelManagerWebsite.Controllers.Admin
                 return View(model);
             }
 
-            _employeeRepository.AddOrUpdate(new Employee()
+            Employee employee = new Employee()
             {
                 Id = model.Id,
                 FirstName = model.FirstName,
@@ -240,7 +243,25 @@ namespace HotelManagerWebsite.Controllers.Admin
                 Hired = model.Hired,
                 IsActive = model.IsActive,
                 Fired = model.Fired
-            });
+            };
+
+
+            IdentityUser user = new IdentityUser()
+            {
+                Email = employee.Email,
+                UserName = employee.Email
+            };
+
+            if (employee.Id == 0)
+            {
+                _userManager.CreateAsync(user, employee.Password);
+            }
+            else
+            {
+                _userManager.UpdateAsync(user);
+            }
+
+            _employeeRepository.AddOrUpdate(employee);
 
             return RedirectToAction("Index");
         }
