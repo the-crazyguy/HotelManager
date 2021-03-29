@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Data.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,10 @@ namespace HotelManagerWebsite.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ConfirmEmailChangeModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<EmployeeUser> _userManager;
+        private readonly SignInManager<EmployeeUser> _signInManager;
 
-        public ConfirmEmailChangeModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public ConfirmEmailChangeModel(UserManager<EmployeeUser> userManager, SignInManager<EmployeeUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

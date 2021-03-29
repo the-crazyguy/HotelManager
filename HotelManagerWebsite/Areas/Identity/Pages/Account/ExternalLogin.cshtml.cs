@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Data.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -19,14 +20,14 @@ namespace HotelManagerWebsite.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<EmployeeUser> _signInManager;
+        private readonly UserManager<EmployeeUser> _userManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
-            SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager,
+            SignInManager<EmployeeUser> signInManager,
+            UserManager<EmployeeUser> userManager,
             ILogger<ExternalLoginModel> logger,
             IEmailSender emailSender)
         {
@@ -121,7 +122,7 @@ namespace HotelManagerWebsite.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new EmployeeUser { UserName = Input.Email, Email = Input.Email };
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)

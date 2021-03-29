@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Entity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,13 +12,13 @@ namespace HotelManagerWebsite.Areas.Identity.Pages.Account.Manage
 {
     public class ResetAuthenticatorModel : PageModel
     {
-        UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        UserManager<EmployeeUser> _userManager;
+        private readonly SignInManager<EmployeeUser> _signInManager;
         ILogger<ResetAuthenticatorModel> _logger;
 
         public ResetAuthenticatorModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<EmployeeUser> userManager,
+            SignInManager<EmployeeUser> signInManager,
             ILogger<ResetAuthenticatorModel> logger)
         {
             _userManager = userManager;
