@@ -11,7 +11,7 @@ namespace HotelManagerWebsite.Models
     {
         public int RoomId { get; set; }
         public RoomViewModel Room { get; set; }
-        public int CreatorId { get; set; }
+        public string CreatorId { get; set; }
         public EmployeeViewModel Creator { get; set; }
         public ICollection<CustomerViewModel> Customers { get; set; }    //TODO Get them from DB!
         public DateTime Arrival { get; set; }

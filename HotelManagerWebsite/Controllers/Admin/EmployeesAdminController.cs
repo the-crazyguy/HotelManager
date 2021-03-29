@@ -4,6 +4,7 @@ using HotelManagerWebsite.Models;
 using HotelManagerWebsite.Models.Admin.Employee;
 using HotelManagerWebsite.Models.Filters;
 using HotelManagerWebsite.Models.Utility;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,21 +15,25 @@ namespace HotelManagerWebsite.Controllers.Admin
 {
     public class EmployeesAdminController : Controller
     {
-        private readonly IEmployeeRepository _employeeRepository;
+        private readonly UserManager<EmployeeUser> _userManager;
 
-        public EmployeesAdminController(IEmployeeRepository employeeRepository)
+        public EmployeesAdminController(UserManager<EmployeeUser> userManager)
         {
-            _employeeRepository = employeeRepository;
+            _userManager = userManager;
         }
 
         [HttpGet]
         public IActionResult Index(EmployeeIndexViewModel model)
         {
             //1. Initialize pager
+            #region Pagination
             model.Pager = model.Pager ?? new PagerViewModel();
             model.Pager.CurrentPage = model.Pager.CurrentPage <= 0 ? 1 : model.Pager.CurrentPage;
             model.Pager.ItemsPerPage = model.Pager.ItemsPerPage <= 0 ? 10 : model.Pager.ItemsPerPage;
+            #endregion
 
+            //2. Initialize filter, 3. Check if the filter is active, 4. Query filtered items
+            #region Filter
             //2. Initialize Filter
             model.Filter = model.Filter ?? new EmployeeFilterViewModel();
 
@@ -40,72 +45,55 @@ namespace HotelManagerWebsite.Controllers.Admin
             bool emptyEmail = string.IsNullOrWhiteSpace(model.Filter.Email);
 
             //4. Query
-            IQueryable<Employee> employees = _employeeRepository.Items
+            IQueryable<EmployeeUser> employeeUsers = _userManager.Users
                 .Where(item =>
-                (emptyUsername || item.Username.Contains(model.Filter.Username)) &&
+                (emptyUsername || item.UserName.Contains(model.Filter.Username)) &&
                 (emptyFirstName || item.FirstName.Contains(model.Filter.FirstName)) &&
                 (emptyMiddleName || item.MiddleName.Contains(model.Filter.MiddleName)) &&
                 (emptyLastName || item.LastName.Contains(model.Filter.LastName)) &&
                 (emptyEmail || item.Email.Contains(model.Filter.Email)));
+            #endregion
 
             //5. Build view model object
-            model.Pager.Pages = (int)Math.Ceiling((double)employees.Count() / model.Pager.ItemsPerPage);
+            //Calculate total pages
+            model.Pager.Pages = (int)Math.Ceiling((double)employeeUsers.Count() / model.Pager.ItemsPerPage);
 
-            employees = employees.OrderBy(item => item.Id)
+            //Calculate which users to show on the current page
+            employeeUsers = employeeUsers.OrderBy(item => item.Id)
                 .Skip((model.Pager.CurrentPage - 1) * model.Pager.ItemsPerPage)
                 .Take(model.Pager.ItemsPerPage);
 
-            //TODO: Remove or rework
-            //model.Items = employees.Select(item => new EmployeeViewModel()
-            //{
-            //    Id = item.Id,
-            //    FirstName = item.FirstName,
-            //    MiddleName = item.MiddleName,
-            //    LastName = item.LastName,
-            //    Username = item.Username,
-            //    Password = item.Password,
-            //    Email = item.Email,
-            //    PhoneNumber = item.PhoneNumber,
-            //    EGN = item.EGN,
-            //    Reservations = item.Reservations.Select(res => new ReservationViewModel()
-            //    {
-            //        Id = res.Id,
-            //        RoomId = res.RoomId,
-            //        Room = new RoomViewModel()
-            //        {
-            //            Id = res.Room.Id
-            //            //TODO: Finish RoomVM
-            //        },
-            //        CreatorId = res.CreatorId,
-            //        Creator = new EmployeeViewModel()
-            //        {
-            //            Id = res.Creator.Id,
-            //            FirstName = res.Creator.FirstName,
-            //            MiddleName = res.Creator.MiddleName,
-            //            LastName = res.Creator.LastName,
-            //            Username = res.Creator.Username,
-            //            Email = res.Creator.Email,
-            //            PhoneNumber = res.Creator.PhoneNumber
-            //        },
-            //        Customers = res.Customers.Select(c => new CustomerViewModel()
-            //        {
-            //            Id = c.Id,
-            //            FirstName = c.FirstName,
-            //            LastName = c.LastName,
-            //            Email = c.Email,
-            //            PhoneNumber = c.PhoneNumber
-            //            //TODO: Finish CustomerVM
-            //        }).ToList(),
-            //        Arrival = res.Arrival,
-            //        Departure = res.Departure,
-            //        BreakfastIncluded = res.BreakfastIncluded,
-            //        IsAllInclusive = res.IsAllInclusive,
-            //        TotalSum = res.TotalSum
-            //    }).ToList(),
-            //    Hired = item.Hired,
-            //    IsActive = item.IsActive,
-            //    Fired = item.Fired
-            //});
+            //TODO: Add Room, Creator and Customers
+            //Make viewmodels from the EmployeeUser items to show in the View
+            model.Items = employeeUsers.Select(item => new EmployeeViewModel()
+            {
+                Id = item.Id,
+                FirstName = item.FirstName,
+                MiddleName = item.MiddleName,
+                LastName = item.LastName,
+                UserName = item.UserName,
+                Email = item.Email,
+                PhoneNumber = item.PhoneNumber,
+                EGN = item.EGN,
+                Reservations = item.Reservations.Select(res => new ReservationViewModel() 
+                {
+                    Id = res.Id,
+                    RoomId = res.RoomId,
+                    //Room
+                    CreatorId = res.CreatorId,
+                    //Creator
+                    //Customers
+                    Arrival = res.Arrival,
+                    Departure = res.Departure,
+                    BreakfastIncluded = res.BreakfastIncluded,
+                    IsAllInclusive = res.IsAllInclusive,
+                    TotalSum = res.TotalSum
+                }).ToList(),
+                Hired = item.Hired,
+                isActive = item.IsActive,
+                Fired = item.Fired
+            });
+
 
             return View(model);
         }
@@ -120,58 +108,7 @@ namespace HotelManagerWebsite.Controllers.Admin
                 return NotFound();
             }
 
-            EmployeeViewModel model = new EmployeeViewModel()
-            {
-                Id = employee.Id,
-                FirstName = employee.FirstName,
-                MiddleName = employee.MiddleName,
-                LastName = employee.LastName,
-                Username = employee.Username,
-                Password = employee.Password,
-                Email = employee.Email,
-                PhoneNumber = employee.PhoneNumber,
-                EGN = employee.EGN,
-                Reservations = employee.Reservations.Select(res => new ReservationViewModel()
-                {
-                    Id = res.Id,
-                    RoomId = res.RoomId,
-                    Room = new RoomViewModel()
-                    {
-                        Id = res.Room.Id
-                        //TODO: Finish RoomVM
-                    },
-                    //TODO: Remove or rework
-                    //CreatorId = res.CreatorId,
-                    //Creator = new EmployeeViewModel()
-                    //{
-                    //    Id = res.Creator.Id,
-                    //    FirstName = res.Creator.FirstName,
-                    //    MiddleName = res.Creator.MiddleName,
-                    //    LastName = res.Creator.LastName,
-                    //    Username = res.Creator.Username,
-                    //    Email = res.Creator.Email,
-                    //    PhoneNumber = res.Creator.PhoneNumber
-                    //},
-                    Customers = res.Customers.Select(c => new CustomerViewModel()
-                    {
-                        Id = c.Id,
-                        FirstName = c.FirstName,
-                        LastName = c.LastName,
-                        Email = c.Email,
-                        PhoneNumber = c.PhoneNumber
-                        //TODO: Finish CustomerVM
-                    }).ToList(),
-                    Arrival = res.Arrival,
-                    Departure = res.Departure,
-                    BreakfastIncluded = res.BreakfastIncluded,
-                    IsAllInclusive = res.IsAllInclusive,
-                    TotalSum = res.TotalSum
-                }).ToList(),
-                Hired = employee.Hired,
-                IsActive = employee.IsActive,
-                Fired = employee.Fired
-
-            };
+            
 
             return View(model);
         }
@@ -185,39 +122,17 @@ namespace HotelManagerWebsite.Controllers.Admin
             if (employee == null)
             {
                 //Employee wasn't found so we want to add one
-                model = new EmployeeEditViewModel()
-                {
-                    Id = 0,
-                    Reservations = new List<Reservation>(),
-                    Hired = DateTime.Now,
-                    IsActive = true
-                };
+                
             }
             else
             {
-                model = new EmployeeEditViewModel()
-                {
-                    Id = employee.Id,
-                    FirstName = employee.FirstName,
-                    MiddleName = employee.MiddleName,
-                    LastName = employee.LastName,
-                    Username = employee.Username,
-                    Password = employee.Password,
-                    Email = employee.Email,
-                    PhoneNumber = employee.PhoneNumber,
-                    EGN = employee.EGN,
-                    Reservations = employee.Reservations,
-                    Hired = employee.Hired,
-                    IsActive = employee.IsActive,
-                    Fired = employee.Fired
-                };
+                //The employee exists, so we edit it
             }
 
             return View(model);
         }
 
-        //TODO: Fix DateTime being set to 01.01.0001 and IsActive to False when the model is recieved from the form submission
-        //      ???
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(EmployeeEditViewModel model)
