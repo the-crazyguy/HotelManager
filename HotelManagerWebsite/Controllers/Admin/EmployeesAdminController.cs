@@ -4,6 +4,7 @@ using HotelManagerWebsite.Models;
 using HotelManagerWebsite.Models.Admin.Employee;
 using HotelManagerWebsite.Models.Filters;
 using HotelManagerWebsite.Models.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,13 +14,16 @@ using System.Threading.Tasks;
 
 namespace HotelManagerWebsite.Controllers.Admin
 {
+    [Authorize(Roles = "Admin")]
     public class EmployeesAdminController : Controller
     {
         private readonly UserManager<EmployeeUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public EmployeesAdminController(UserManager<EmployeeUser> userManager)
+        public EmployeesAdminController(UserManager<EmployeeUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         [HttpGet]
@@ -58,8 +62,8 @@ namespace HotelManagerWebsite.Controllers.Admin
             //Calculate total pages
             model.Pager.Pages = (int)Math.Ceiling((double)employeeUsers.Count() / model.Pager.ItemsPerPage);
 
-            //Calculate which users to show on the current page
-            employeeUsers = employeeUsers.OrderBy(item => item.Id)
+            //Calculate which users to show on the current page and order them by whether they are active or not
+            employeeUsers = employeeUsers.OrderByDescending(item => item.IsActive)
                 .Skip((model.Pager.CurrentPage - 1) * model.Pager.ItemsPerPage)
                 .Take(model.Pager.ItemsPerPage);
 
@@ -90,7 +94,7 @@ namespace HotelManagerWebsite.Controllers.Admin
                     TotalSum = res.TotalSum
                 }).ToList(),
                 Hired = item.Hired,
-                isActive = item.IsActive,
+                IsActive = item.IsActive,
                 Fired = item.Fired
             });
 
@@ -99,16 +103,43 @@ namespace HotelManagerWebsite.Controllers.Admin
         }
 
         [HttpGet]
-        public IActionResult Details(int id)
+        public IActionResult Details(string id)
         {
-            Employee employee = _employeeRepository.Items.FirstOrDefault(item => item.Id == id);
+            EmployeeUser employeeUser = _userManager.Users.FirstOrDefault(item => item.Id == id);
 
-            if (employee == null)
+            if (employeeUser == null)
             {
                 return NotFound();
             }
 
-            
+            EmployeeViewModel model = new EmployeeViewModel()
+            {
+                Id = employeeUser.Id,
+                FirstName = employeeUser.FirstName,
+                MiddleName = employeeUser.MiddleName,
+                LastName = employeeUser.LastName,
+                UserName = employeeUser.UserName,
+                Email = employeeUser.Email,
+                PhoneNumber = employeeUser.PhoneNumber,
+                EGN = employeeUser.EGN,
+                Reservations = employeeUser.Reservations.Select(res => new ReservationViewModel()
+                {
+                    Id = res.Id,
+                    RoomId = res.RoomId,
+                    //Room
+                    CreatorId = res.CreatorId,
+                    //Creator
+                    //Customers
+                    Arrival = res.Arrival,
+                    Departure = res.Departure,
+                    BreakfastIncluded = res.BreakfastIncluded,
+                    IsAllInclusive = res.IsAllInclusive,
+                    TotalSum = res.TotalSum
+                }).ToList(),
+                Hired = employeeUser.Hired,
+                IsActive = employeeUser.IsActive,
+                Fired = employeeUser.Fired
+            };
 
             return View(model);
         }
@@ -116,20 +147,7 @@ namespace HotelManagerWebsite.Controllers.Admin
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            Employee employee = _employeeRepository.Items.FirstOrDefault(item => item.Id == id);
-            EmployeeEditViewModel model;
-
-            if (employee == null)
-            {
-                //Employee wasn't found so we want to add one
-                
-            }
-            else
-            {
-                //The employee exists, so we edit it
-            }
-
-            return View(model);
+            throw new NotImplementedException();
         }
 
 
@@ -137,28 +155,37 @@ namespace HotelManagerWebsite.Controllers.Admin
         [ValidateAntiForgeryToken]
         public IActionResult Edit(EmployeeEditViewModel model)
         {
-            if (!ModelState.IsValid)
+            throw new NotImplementedException();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Fire(string id)
+        {
+            EmployeeUser employeeUser = _userManager.Users.FirstOrDefault(item => item.Id == id);
+
+            if (employeeUser == null)
             {
-                return View(model);
+                return NotFound();
             }
 
-            _employeeRepository.AddOrUpdate(new Employee()
+            //If a "Fired" role does not exist, create it
+            if (!await _roleManager.RoleExistsAsync(WebConstants.FiredRole))
             {
-                Id = model.Id,
-                FirstName = model.FirstName,
-                MiddleName = model.MiddleName,
-                LastName = model.LastName,
-                Username = model.Username,
-                Password = model.Password,
-                Email = model.Email,
-                PhoneNumber = model.PhoneNumber,
-                EGN = model.EGN,
-                Reservations = model.Reservations,
-                Hired = model.Hired,
-                IsActive = model.IsActive,
-                Fired = model.Fired
-            });
+                await _roleManager.CreateAsync(new IdentityRole(WebConstants.FiredRole));
+            }
 
+            bool isAdmin = await _userManager.IsInRoleAsync(employeeUser, WebConstants.AdminRole);
+            bool isFired = await _userManager.IsInRoleAsync(employeeUser, WebConstants.FiredRole);
+
+            //We cannot fire other admins or already fired users
+            if (!isAdmin && !isFired)
+            {
+                employeeUser.IsActive = false;
+                employeeUser.Fired = DateTime.Now;
+                await _userManager.AddToRoleAsync(employeeUser, WebConstants.FiredRole);
+            }
+
+            
             return RedirectToAction("Index");
         }
     }

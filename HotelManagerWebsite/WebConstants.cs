@@ -9,5 +9,6 @@ namespace HotelManagerWebsite
     {
         public static string AdminRole = "Admin";
         public static string EmployeeRole = "Employee";
+        public static string FiredRole = "Fired";
     }
 }

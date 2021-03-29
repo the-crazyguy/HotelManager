@@ -20,7 +20,7 @@ namespace HotelManagerWebsite.Models.Admin.Employee
         public string EGN { get; set; }
         public ICollection<ReservationViewModel> Reservations { get; set; }
         public DateTime Hired { get; set; }
-        public bool isActive { get; set; }
+        public bool IsActive { get; set; }
         public DateTime? Fired { get; set; }
     }
 }
