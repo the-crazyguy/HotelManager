@@ -36,6 +36,17 @@ namespace HotelManagerWebsite.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Required]
+            [Display(Name = "First name")]
+            public string FirstName { get; set; }
+
+            [Display(Name = "Middle name")]
+            public string MiddleName { get; set; }
+
+            [Required]
+            [Display(Name = "Last name")]
+            public string LastName { get; set; }
         }
 
         private async Task LoadAsync(EmployeeUser user)
@@ -60,6 +71,12 @@ namespace HotelManagerWebsite.Areas.Identity.Pages.Account.Manage
             }
 
             await LoadAsync(user);
+
+            //Load user credentials in the form
+            Input.FirstName = user.FirstName;
+            Input.MiddleName = user.MiddleName;
+            Input.LastName = user.LastName;
+
             return Page();
         }
 
@@ -87,6 +104,12 @@ namespace HotelManagerWebsite.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
+
+            user.FirstName = Input.FirstName;
+            user.MiddleName = Input.MiddleName;
+            user.LastName = Input.LastName;
+
+            await _userManager.UpdateAsync(user);
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";

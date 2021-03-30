@@ -8,9 +8,6 @@
             {
                 <div class="d-flex flex-wrap align-content-around">
                     <div class="form-group mr-auto">
-                        @Html.EditorFor(model => model.Filter.Username, new { htmlAttributes = new { placeholder = "Username" } })
-                    </div>
-                    <div class="form-group mr-auto">
                         @Html.EditorFor(model => model.Filter.FirstName, new { htmlAttributes = new { placeholder = "First Name" } })
                     </div>
                     <div class="form-group mr-auto">
@@ -18,6 +15,9 @@
                     </div>
                     <div class="form-group mr-auto">
                         @Html.EditorFor(model => model.Filter.LastName, new { htmlAttributes = new { placeholder = "Last Name" } })
+                    </div>
+                    <div class="form-group mr-auto">
+                        @Html.EditorFor(model => model.Filter.Username, new { htmlAttributes = new { placeholder = "Username" } })
                     </div>
                     <div class="form-group mr-auto">
                         @Html.EditorFor(model => model.Filter.Email, new { htmlAttributes = new { placeholder = "Email" } })
