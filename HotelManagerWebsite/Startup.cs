@@ -31,15 +31,14 @@ namespace HotelManagerWebsite
 
             services.AddControllersWithViews();
 
-            //TODO: Add Dependency Injection here
+            //Dependency Injection
             //services.AddScoped</*Interface*/, /*Class that implements said interface*/>();
-            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
 
             services.AddHttpContextAccessor();
-            services.AddSession();  //TODO: Remove if sessions are not needed
+            services.AddSession();  
             services.AddIdentity<EmployeeUser, IdentityRole>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI()

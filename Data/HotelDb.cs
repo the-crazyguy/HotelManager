@@ -11,7 +11,6 @@ namespace Data
     public class HotelDb : IdentityDbContext<EmployeeUser>
     {
         public virtual DbSet<Customer> Customers { get; set; }
-        public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<EmployeeUser> EmployeeUsers { get; set; }

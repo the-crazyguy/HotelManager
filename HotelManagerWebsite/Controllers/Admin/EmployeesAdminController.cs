@@ -147,7 +147,7 @@ namespace HotelManagerWebsite.Controllers.Admin
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            throw new NotImplementedException();
+            return NotFound();
         }
 
 
@@ -155,7 +155,7 @@ namespace HotelManagerWebsite.Controllers.Admin
         [ValidateAntiForgeryToken]
         public IActionResult Edit(EmployeeEditViewModel model)
         {
-            throw new NotImplementedException();
+            return NotFound();
         }
 
         [HttpGet]
