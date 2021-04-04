@@ -1,0 +1,69 @@
+﻿@model ReservationIndexViewModel
+
+<h1>Reservations</h1>
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+
+            <div class="float-right">
+                <a asp-action="Edit" asp-controller="Reservations" class="btn btn-success">
+                    Create
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="align-middle">Id</th>
+                        <th class="align-middle">Room Id</th>    @*Make it a link to the room's details*@
+                        <th class="align-middle">Creator</th> @*Make it a link to the employee's details*@
+                        <th class="align-middle">Customers</th>
+                        <th class="align-middle">Arrival</th>
+                        <th class="align-middle">Departure</th>
+                        <th class="align-middle">Total Sum</th>
+                        <th class="align-middle">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td class="text-nowrap align-middle">@item.Id</td>
+                            <td class="text-nowrap align-middle">
+                                <a asp-action="Details" asp-controller="Rooms" asp-route="@item.RoomId">@item.RoomId</a>
+                            </td>
+                            <td class="text-nowrap align-middle">
+                                <a asp-action="Details" asp-controller="Employees" asp-route="@item.CreatorId">@item.Creator.FullName</a>
+                            </td>
+                            <td class="text-nowrap align-middle">@item.Customers.Count()</td>
+                            <td class="text-nowrap align-middle">@item.Arrival.ToShortDateString()</td>
+                            <td class="text-nowrap align-middle">@item.Departure.ToShortDateString()</td>
+                            <td class="text-nowrap align-middle">@item.TotalSum</td>
+                            <td>
+                                <div class="d-flex flex-wrap justify-content-center">
+                                    <a asp-controller="Reservations" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info m-1">Details</a>
+                                    <a asp-controller="Reservations" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary m-1">Edit</a>
+                                    <a asp-controller="Reservations" asp-action="Remove" asp-route-id="@item.Id" class="btn btn-danger m-1">Remove</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-center">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.Pager.Pages; i++)
+                {
+                    <li class="page-item @(i == Model.Pager.CurrentPage ? "active" : "")">
+                        <a asp-route-Pager.CurrentPage="@i" class="page-link">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

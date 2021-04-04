@@ -3,6 +3,7 @@ using Data.Repositories;
 using HotelManagerWebsite.Models;
 using HotelManagerWebsite.Models.Admin.Employee;
 using HotelManagerWebsite.Models.Filters;
+using HotelManagerWebsite.Models.Reservation;
 using HotelManagerWebsite.Models.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
