@@ -1,8 +1,10 @@
 ﻿using Data.Entity;
 using Data.Repositories;
 using HotelManagerWebsite.Models;
+using HotelManagerWebsite.Models.Admin.Employee;
 using HotelManagerWebsite.Models.Reservation;
 using HotelManagerWebsite.Models.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace HotelManagerWebsite.Controllers
 {
+    [Authorize(Roles = "Admin,Employee")]
     public class ReservationsController : Controller
     {
         private readonly IReservationRepository _reservationRepository;
@@ -49,7 +52,13 @@ namespace HotelManagerWebsite.Controllers
                 RoomId = item.Id,
                 //Room
                 CreatorId = item.CreatorId,
-                //Creator
+                Creator = new EmployeeViewModel()
+                {
+                    Id = item.Creator.Id,
+                    FirstName = item.Creator.FirstName,
+                    MiddleName = item.Creator.MiddleName,
+                    LastName = item.Creator.LastName
+                },
                 //Customers
                 Arrival = item.Arrival,
                 Departure = item.Departure,
@@ -58,8 +67,43 @@ namespace HotelManagerWebsite.Controllers
                 TotalSum = item.TotalSum
             });
 
+            return View(model);
+        }
+
+        public IActionResult Details(int id)
+        {
+            Reservation reservation = _reservationRepository.Items.FirstOrDefault(item => item.Id == id);
+
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            ReservationViewModel model = new ReservationViewModel()
+            {
+                Id = reservation.Id,
+                RoomId = reservation.Id,
+                //Room
+                CreatorId = reservation.CreatorId,
+                Creator = new EmployeeViewModel()
+                {
+                    Id = reservation.Creator.Id,
+                    FirstName = reservation.Creator.FirstName,
+                    MiddleName = reservation.Creator.MiddleName,
+                    LastName = reservation.Creator.LastName
+                },
+                //TEMPORARY
+                Customers = new List<CustomerViewModel>(),
+                Arrival = reservation.Arrival,
+                Departure = reservation.Departure,
+                BreakfastIncluded = reservation.BreakfastIncluded,
+                IsAllInclusive = reservation.IsAllInclusive,
+                TotalSum = reservation.TotalSum
+            };
 
             return View(model);
         }
+
+
     }
 }

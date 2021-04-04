@@ -1,0 +1,39 @@
+﻿@model ReservationViewModel
+@{
+    ViewData["Title"] = "Employee Details";
+}
+
+<h1>Reservation @Model.Id</h1>
+
+<div>
+    <label>Id: </label> <span>@Model.Id</span>
+</div>
+<div>
+    <label>Room Id: </label> <a asp-action="Details" asp-controller="Rooms" asp-route-id="@Model.RoomId">@Model.RoomId</a>
+</div>
+<div>
+    <label>Creator: </label> <span>@Model.Creator.FullName</span>
+</div>
+<div>
+    <label>Arrival: </label> <span>@Model.Arrival.ToShortDateString()</span>
+</div>
+<div>
+    <label>Departure: </label> <span>@Model.Departure.ToShortDateString()</span>
+</div>
+<div>
+    <label>Breakfast Included: </label> <span>@(Model.BreakfastIncluded ? "✔" : "❌")</span>
+</div>
+<div>
+    <label>All Inclusive: </label> <span>@(Model.IsAllInclusive ? "✔" : "❌")</span>
+</div>
+<div>
+    <label>Total Sum: </label> <span>@Model.TotalSum</span>
+</div>
+
+<h3>Customers</h3>
+<div>
+    @foreach (var item in Model.Customers)
+    {
+        <a asp-action="Details" asp-controller="Customers" asp-route-id="@item.Id">@item.FullName</a>
+    }
+</div>
