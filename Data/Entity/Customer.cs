@@ -8,7 +8,6 @@ namespace Data.Entity
     public class Customer : PersonBase
     {
         public bool IsAdult { get; set; }
-        public int ReservationId { get; set; }
-        public virtual Reservation Reservation { get; set; }
+        public virtual ICollection<CustomerReservation> CustomerReservations { get; set; }
     }
 }
