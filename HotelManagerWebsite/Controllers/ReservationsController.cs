@@ -62,7 +62,7 @@ namespace HotelManagerWebsite.Controllers
             model.Items = reservations.Select(item => new ReservationViewModel() 
             {
                 Id = item.Id,
-                RoomId = item.Id,
+                RoomId = item.RoomId,
                 //Room
                 CreatorId = item.CreatorId,
                 Creator = new EmployeeViewModel()
@@ -141,7 +141,8 @@ namespace HotelManagerWebsite.Controllers
                     {
                         Id = item.Id,
                         Type = item.Type
-                    }).ToList()
+                    }).ToList(),
+                    SelectedCustomerIds = new List<int>()
                 };
             }
             else
@@ -172,7 +173,7 @@ namespace HotelManagerWebsite.Controllers
                 };
             }
 
-            return View();
+            return View(model);
         }
 
         [HttpPost]
@@ -185,7 +186,6 @@ namespace HotelManagerWebsite.Controllers
             }
 
             var user = await _userManager.GetUserAsync(User);
-            //TODO: Get the room from roomRepo and mark it as taken
 
             Reservation reservation = new Reservation()
             {
@@ -204,6 +204,7 @@ namespace HotelManagerWebsite.Controllers
                 }).ToList()
             };
 
+            //TODO: Fix SQL Exception
             _reservationRepository.AddOrUpdate(reservation);
 
             return RedirectToAction("Index");

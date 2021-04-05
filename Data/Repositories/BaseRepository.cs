@@ -15,28 +15,28 @@ namespace Data.Repositories
             _dbContext = dbContext;
         }
         
-        public int Add(T item)
+        public virtual int Add(T item)
         {
             _dbContext.Add(item);
             return _dbContext.SaveChanges();
         }
 
-        public int Update(T item)
+        public virtual int Update(T item)
         {
             _dbContext.Update(item);
             return _dbContext.SaveChanges();
         }
 
-        public int AddOrUpdate(T item)
+        public virtual int AddOrUpdate(T item)
         {
             if (item.Id == 0)
             {
-                //The Id is 0 so we are adding a new customer
+                //The Id is 0 so we are adding a new item
                 return Add(item);
             }
             else
             {
-                //The Id exists, so we update the customer
+                //The Id exists, so we update the item
                 return Update(item);
             }
         }

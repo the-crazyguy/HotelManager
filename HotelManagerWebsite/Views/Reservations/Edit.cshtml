@@ -39,7 +39,6 @@
             @Html.EditorFor(model => model.IsAllInclusive, new { htmlAttributes = new { @class = "ml-3" } })
         </div>
 
-        @*TODO: Fix crashing issue*@
         <div class="mb-5">
             <label>Customers</label>
             @Html.ListBoxFor(model => model.SelectedCustomerIds, new MultiSelectList(Model.Customers, "Id", "FullName"),
@@ -48,7 +47,7 @@
 
         <div class="mb-5">
             <label>Room</label>
-            @Html.ListBoxFor(model => model.RoomId, new SelectList(Model.Rooms, "Id", "Type"))
+            @Html.DropDownListFor(model => model.RoomId, new SelectList(Model.Rooms, "Id", "Type"))
         </div>
 
         <div class="mb-5">
