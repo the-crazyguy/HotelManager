@@ -9,6 +9,7 @@
         <input hidden asp-for="Creator" />
         <input hidden asp-for="CreatorId" />
 
+        @*TODO: Fix invalid datetime format making ModelState invalid*@
         <div class="mb-5">
             <label>Arrival</label>
             <div class="input-group date" id="datepicker1">
@@ -39,6 +40,7 @@
             @Html.EditorFor(model => model.IsAllInclusive, new { htmlAttributes = new { @class = "ml-3" } })
         </div>
 
+        @*TODO: Fix Model.Customers is null in post*@
         <div class="mb-5">
             <label>Customers</label>
             @Html.ListBoxFor(model => model.SelectedCustomerIds, new MultiSelectList(Model.Customers, "Id", "FullName"),
@@ -47,7 +49,7 @@
 
         <div class="mb-5">
             <label>Room</label>
-            @Html.DropDownListFor(model => model.RoomId, new SelectList(Model.Rooms, "Id", "Type"))
+            @Html.DropDownListFor(model => model.RoomId, new SelectList(Model.Rooms, "Id", "RoomNumber"))
         </div>
 
         <div class="mb-5">

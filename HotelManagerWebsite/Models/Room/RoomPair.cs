@@ -8,6 +8,6 @@ namespace HotelManagerWebsite.Models.Room
 {
     public class RoomPair : BasePair
     {
-        public string Type { get; set; }
+        public int RoomNumber { get; set; }
     }
 }
