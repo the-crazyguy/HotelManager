@@ -123,30 +123,27 @@ namespace HotelManagerWebsite.Controllers
         {
             Reservation reservation = _reservationRepository.Items.FirstOrDefault(item => item.Id == id);
 
-            IQueryable<Room> freeRooms = _roomRepository.Items.Where(item => item.IsAvailable == true || item.Id == reservation.Room.Id);
-            IQueryable<Customer> customers = _customerRepository.Items;
-
-            //If there are no free rooms or customers, do not allow a reservation to be made
-            if (freeRooms.Count() == 0 || customers.Count() == 0)
-            {
-                return RedirectToAction("Index");
-            }
-
             ReservationEditViewModel model;
 
             if (reservation == null)
             {
+                //If there are no free rooms or customers, do not allow a reservation to be made
+                if (_roomRepository.Items.Where(item => item.IsAvailable == true).Count() == 0 || _customerRepository.Items.Count() == 0)
+                {
+                    return RedirectToAction("Index");
+                }
+
                 //No Reservation found, so we create a new one
                 model = new ReservationEditViewModel()
                 {
                     Id = 0,
-                    Customers = customers.Select(item => new CustomerPair()
+                    Customers = _customerRepository.Items.Select(item => new CustomerPair()
                     {
                         Id = item.Id,
                         FirstName = item.FirstName,
                         LastName = item.LastName
                     }).ToList(),
-                    Rooms = freeRooms.Select(item => new RoomPair()
+                    Rooms = _roomRepository.Items.Where(item => item.IsAvailable == true).Select(item => new RoomPair()
                     {
                         Id = item.Id,
                         RoomNumber = item.RoomNumber
@@ -156,6 +153,13 @@ namespace HotelManagerWebsite.Controllers
             }
             else
             {
+                //If there are no free rooms or customers, do not allow a reservation to be made
+                if (_roomRepository.Items.Where(item => item.IsAvailable == true || item.Id == reservation.Room.Id).Count() == 0 ||
+                    _customerRepository.Items.Count() == 0)
+                {
+                    return RedirectToAction("Index");
+                }
+
                 //A Reservation was found, so we edit it
                 model = new ReservationEditViewModel()
                 {
@@ -167,7 +171,7 @@ namespace HotelManagerWebsite.Controllers
                     BreakfastIncluded = reservation.BreakfastIncluded,
                     IsAllInclusive = reservation.IsAllInclusive,
                     TotalSum = reservation.TotalSum,
-                    Customers = customers.Select(item => new CustomerPair()
+                    Customers = _customerRepository.Items.Select(item => new CustomerPair()
                     {
                         Id = item.Id,
                         FirstName = item.FirstName,
@@ -189,6 +193,7 @@ namespace HotelManagerWebsite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ReservationEditViewModel model)
         {
+            //TODO: Fix Invalid ModelState
             if (!ModelState.IsValid)
             {
                 //Repopulate the customer and room pairs to prevent crashing
