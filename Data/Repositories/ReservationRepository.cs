@@ -47,8 +47,6 @@ namespace Data.Repositories
             Room room = await _dbContext.Rooms.FindAsync(reservation.RoomId);
             room.IsAvailable = false;
 
-            //BREAKS HERE
-
             return await _dbContext.SaveChangesAsync();
         }
 
@@ -57,6 +55,8 @@ namespace Data.Repositories
             _dbContext.CustomerReservations.RemoveRange(
                 _dbContext.CustomerReservations.Where(cr => cr.ReservationId == reservation.Id)
                 );
+
+            await _dbContext.SaveChangesAsync();
 
             if (reservation.Id == 0)
             {

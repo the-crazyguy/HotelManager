@@ -198,10 +198,9 @@ namespace HotelManagerWebsite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ReservationEditViewModel model)
         {
-            //TODO: Fix Invalid ModelState
             if (!ModelState.IsValid)
             {
-                //Repopulate the customer and room pairs to prevent crashing
+                //Repopulate the customer and room pairs for the dropdowns/lists
                 model.Customers = _customerRepository.Items.Select(item => new CustomerPair()
                 {
                     Id = item.Id,
@@ -217,6 +216,10 @@ namespace HotelManagerWebsite.Controllers
 
                 return View(model);
             }
+
+            //TODO:
+            //Check if Arrival and Departure are set properly
+            //i.e. Arrival should be before Departure and at earliest - DateTime.Now
 
             var user = await _userManager.GetUserAsync(User);
 
