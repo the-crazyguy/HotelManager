@@ -1,0 +1,89 @@
+﻿@model CustomerIndexViewModel
+
+<h1>Customers</h1>
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            @using (Html.BeginForm("Index", "Customers", FormMethod.Get, new
+             {
+                    @class = "navbar-search"
+             }))
+             {
+                <div class="d-flex flex-wrap ">
+                    <div class="form-group mr-auto">
+                        @Html.EditorFor(model => model.Filter.FirstName, new { htmlAttributes = new { placeholder = "First Name" } })
+                    </div>
+                    <div class="form-group mr-auto">
+                        @Html.EditorFor(model => model.Filter.LastName, new { htmlAttributes = new { placeholder = "Last Name" } })
+                    </div>
+                    <div class="form-group mr-auto">
+                        @Html.EditorFor(model => model.Filter.Email, new { htmlAttributes = new { placeholder = "E-mail" } })
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap">
+                    <button class="btn btn-primary">
+                        Filter
+                    </button>
+                </div>
+             }
+
+            <div>
+                <a asp-action="Edit" asp-controller="Customers" class="btn btn-success">
+                    Create
+                </a>
+            </div>
+        </div>
+        <div>
+            <div class="card-body table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Adult</th>
+                            <th>Reservations</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <td class="text-nowrap align-middle">@item.FullName</td>
+                                <td class="align-middle">@item.Email</td>
+                                @*HACK: putting unicode/hex/html code, html entity and css code does not work with the ternary operator*@
+                                <td class="text-center align-middle">@(item.IsAdult ? "✔" : "❌")</td>
+                                <td class="text-center align-middle">@(item.Reservations != null ? item.Reservations.Count() : 0)</td>
+                                <td>
+                                    <div class="d-flex flex-wrap justify-content-center">
+                                        <a asp-controller="Customers" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info m-1">Details</a>
+                                        <a asp-controller="Customers" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary m-1">Edit</a>
+                                        <a asp-controller="Customers" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger m-1">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-center">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.Pager.Pages; i++)
+                {
+                    <li class="page-item @(i == Model.Pager.CurrentPage ? "active" : "")">
+                        <a asp-route-Filter.FirstName="@Model.Filter.FirstName"
+                           asp-route-Filter.LastName="@Model.Filter.LastName"
+                           asp-route-Filter.Email="@Model.Filter.Email"
+                           asp-route-Pager.CurrentPage="@i"
+                           class="page-link">@i</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+

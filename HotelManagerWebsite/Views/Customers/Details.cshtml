@@ -1,0 +1,29 @@
+﻿@model CustomerViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@Model.FullName</h1>
+<div>
+    <div>
+        <label>Id: </label> <span>@Model.Id</span>
+    </div>
+    <div>
+        <label>First name: </label> <span>@Model.FirstName</span>
+    </div>
+    <div>
+        <label>Last name: </label> <span>@Model.LastName</span>
+    </div>
+    <div>
+        <label>Email: </label> <span>@Model.Email</span>
+    </div>
+    <div>
+        <label>Phone number: </label> <span>@Model.PhoneNumber</span>
+    </div>
+    <div>
+        <label>Adult: </label> <span>@(Model.IsAdult ? "✔" : "❌")</span>
+    </div>
+
+    @*TODO:Add Partials for the Reservations*@
+</div>
+
