@@ -62,7 +62,7 @@ namespace HotelManagerWebsite.Controllers
             model.Items = reservations.Select(item => new ReservationViewModel() 
             {
                 Id = item.Id,
-                RoomId = item.Id,
+                RoomId = item.RoomId,
                 //Room
                 CreatorId = item.CreatorId,
                 Creator = new EmployeeViewModel()
@@ -118,6 +118,8 @@ namespace HotelManagerWebsite.Controllers
             return View(model);
         }
 
+        private int oldRoomId;
+
         [HttpGet]
         public IActionResult Edit(int? id)
         {
@@ -127,6 +129,12 @@ namespace HotelManagerWebsite.Controllers
 
             if (reservation == null)
             {
+                //If there are no free rooms or customers, do not allow a reservation to be made
+                if (_roomRepository.Items.Where(item => item.IsAvailable == true).Count() == 0 || _customerRepository.Items.Count() == 0)
+                {
+                    return RedirectToAction("Index");
+                }
+
                 //No Reservation found, so we create a new one
                 model = new ReservationEditViewModel()
                 {
@@ -137,15 +145,26 @@ namespace HotelManagerWebsite.Controllers
                         FirstName = item.FirstName,
                         LastName = item.LastName
                     }).ToList(),
-                    Rooms = _roomRepository.Items.Select(item => new RoomPair()
+                    Rooms = _roomRepository.Items.Where(item => item.IsAvailable == true).Select(item => new RoomPair()
                     {
                         Id = item.Id,
-                        Type = item.Type
-                    }).ToList()
+                        RoomNumber = item.RoomNumber
+                    }).ToList(),
+                    SelectedCustomerIds = new List<int>()
                 };
             }
             else
             {
+                //If there are no free rooms or customers, do not allow a reservation to be made
+                if (_roomRepository.Items.Where(item => item.IsAvailable == true || item.Id == reservation.Room.Id).Count() == 0 ||
+                    _customerRepository.Items.Count() == 0)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                //Keep the old room id
+                oldRoomId = reservation.RoomId;
+
                 //A Reservation was found, so we edit it
                 model = new ReservationEditViewModel()
                 {
@@ -164,28 +183,42 @@ namespace HotelManagerWebsite.Controllers
                         LastName = item.LastName
                     }).ToList(),
                     SelectedCustomerIds = reservation.CustomerReservations.Select(cr => cr.CustomerId).ToList(),
-                    Rooms = _roomRepository.Items.Select(item => new RoomPair()
+                    Rooms = _roomRepository.Items.Where(item => item.IsAvailable == true || item.Id == reservation.RoomId).Select(item => new RoomPair()
                     {
                         Id = item.Id,
-                        Type = item.Type
+                        RoomNumber = item.RoomNumber
                     }).ToList()
                 };
             }
 
-            return View();
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ReservationEditViewModel model)
         {
+            //TODO: Fix Invalid ModelState
             if (!ModelState.IsValid)
             {
+                //Repopulate the customer and room pairs to prevent crashing
+                model.Customers = _customerRepository.Items.Select(item => new CustomerPair()
+                {
+                    Id = item.Id,
+                    FirstName = item.FirstName,
+                    LastName = item.LastName
+                }).ToList();
+
+                model.Rooms = _roomRepository.Items.Where(item => item.IsAvailable == true || item.Id == model.RoomId).Select(item => new RoomPair()
+                {
+                    Id = item.Id,
+                    RoomNumber = item.RoomNumber
+                }).ToList();
+
                 return View(model);
             }
 
             var user = await _userManager.GetUserAsync(User);
-            //TODO: Get the room from roomRepo and mark it as taken
 
             Reservation reservation = new Reservation()
             {
@@ -204,7 +237,64 @@ namespace HotelManagerWebsite.Controllers
                 }).ToList()
             };
 
-            _reservationRepository.AddOrUpdate(reservation);
+            //Check if the reservation's room has been changed
+            if (oldRoomId != 0 && oldRoomId != reservation.RoomId)
+            {
+                //Vacate the room that was previously assigned to this reservation
+                VacateRoom(oldRoomId);
+                oldRoomId = 0;
+            }
+
+            //WARNING: The website gets stuck here
+            //TODO: Fix the problem
+            await _reservationRepository.AddOrUpdate(reservation);
+
+            return RedirectToAction("Index");
+        }
+
+        //Vacate the room but keep the reservation in the db
+        [HttpGet]
+        public IActionResult MarkAsDone(int id)
+        {
+            Reservation reservation = _reservationRepository.Items.FirstOrDefault(item => item.Id == id);
+
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            VacateRoom(reservation.RoomId);
+
+            return RedirectToAction("Index");
+        }
+
+        private void VacateRoom(int roomId)
+        {
+            Room room = _roomRepository.Items.FirstOrDefault(item => item.Id == roomId);
+
+            if (room == null)
+            {
+                return;
+            }
+
+            room.IsAvailable = true;
+
+            _roomRepository.Update(room);
+        }
+
+        //Vacate the room and delete the reservation
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            Reservation reservation = _reservationRepository.Items.FirstOrDefault(item => item.Id == id);
+
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            VacateRoom(reservation.RoomId);
+            _reservationRepository.Delete(reservation);
 
             return RedirectToAction("Index");
         }

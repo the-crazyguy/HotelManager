@@ -19,7 +19,7 @@
                         <th class="align-middle">Id</th>
                         <th class="align-middle">Room Id</th>    @*Make it a link to the room's details*@
                         <th class="align-middle">Creator</th>
-                        <th class="align-middle">Customers</th>
+                        @*<th class="align-middle">Customers</th>*@
                         <th class="align-middle">Arrival</th>
                         <th class="align-middle">Departure</th>
                         <th class="align-middle">Total Sum</th>
@@ -33,10 +33,10 @@
                         <tr>
                             <td class="text-nowrap align-middle">@item.Id</td>
                             <td class="text-nowrap align-middle">
-                                <a asp-action="Details" asp-controller="Rooms" asp-route="@item.RoomId">@item.RoomId</a>
+                                <a asp-action="Details" asp-controller="Rooms" asp-route-id="@item.RoomId">@item.RoomId</a>
                             </td>
                             <td class="text-nowrap align-middle">@item.Creator.FullName</td>
-                            <td class="text-nowrap align-middle">@item.Customers.Count()</td>
+                            @*<td class="text-nowrap align-middle">@item.Customers.Count()</td>*@
                             <td class="text-nowrap align-middle">@item.Arrival.ToShortDateString()</td>
                             <td class="text-nowrap align-middle">@item.Departure.ToShortDateString()</td>
                             <td class="text-nowrap align-middle">@item.TotalSum</td>

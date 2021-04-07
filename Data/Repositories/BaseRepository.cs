@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Data.Repositories
 {
@@ -15,36 +16,36 @@ namespace Data.Repositories
             _dbContext = dbContext;
         }
         
-        public int Add(T item)
+        public virtual async Task<int> Add(T item)
         {
             _dbContext.Add(item);
-            return _dbContext.SaveChanges();
+            return await _dbContext.SaveChangesAsync();
         }
 
-        public int Update(T item)
+        public virtual async Task<int> Update(T item)
         {
             _dbContext.Update(item);
-            return _dbContext.SaveChanges();
+            return await _dbContext.SaveChangesAsync();
         }
 
-        public int AddOrUpdate(T item)
+        public virtual async Task<int> AddOrUpdate(T item)
         {
             if (item.Id == 0)
             {
-                //The Id is 0 so we are adding a new customer
-                return Add(item);
+                //The Id is 0 so we are adding a new item
+                return await Add(item);
             }
             else
             {
-                //The Id exists, so we update the customer
-                return Update(item);
+                //The Id exists, so we update the item
+                return await Update(item);
             }
         }
 
-        public int Delete(T item)
+        public async Task<int> Delete(T item)
         {
             _dbContext.Remove(item);
-            return _dbContext.SaveChanges();
+            return await _dbContext.SaveChangesAsync();
         }
     }
 }
