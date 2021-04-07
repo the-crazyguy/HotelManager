@@ -118,6 +118,8 @@ namespace HotelManagerWebsite.Controllers
             return View(model);
         }
 
+        private int oldRoomId;
+
         [HttpGet]
         public IActionResult Edit(int? id)
         {
@@ -159,6 +161,9 @@ namespace HotelManagerWebsite.Controllers
                 {
                     return RedirectToAction("Index");
                 }
+
+                //Keep the old room id
+                oldRoomId = reservation.RoomId;
 
                 //A Reservation was found, so we edit it
                 model = new ReservationEditViewModel()
@@ -232,7 +237,15 @@ namespace HotelManagerWebsite.Controllers
                 }).ToList()
             };
 
-            //WARNING: The website gets stuck after redirecting from the post request 
+            //Check if the reservation's room has been changed
+            if (oldRoomId != 0 && oldRoomId != reservation.RoomId)
+            {
+                //Vacate the room that was previously assigned to this reservation
+                VacateRoom(oldRoomId);
+                oldRoomId = 0;
+            }
+
+            //WARNING: The website gets stuck here
             //TODO: Fix the problem
             await _reservationRepository.AddOrUpdate(reservation);
 

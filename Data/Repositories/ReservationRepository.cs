@@ -20,15 +20,16 @@ namespace Data.Repositories
 
         public override async Task<int> Add(Reservation reservation)
         {
-            await _dbContext.AddAsync(reservation);
+            _dbContext.Add(reservation);
 
             foreach (var item in reservation.CustomerReservations)
             {
-                await _dbContext.CustomerReservations.AddAsync(item);
+                _dbContext.CustomerReservations.Add(item);
             }
 
             //Mark the room as taken
-            _dbContext.Rooms.FindAsync(reservation.RoomId).Result.IsAvailable = false;
+            Room room = await _dbContext.Rooms.FindAsync(reservation.RoomId);
+            room.IsAvailable = false;
 
             return await _dbContext.SaveChangesAsync();
         }
@@ -39,11 +40,14 @@ namespace Data.Repositories
 
             foreach (var item in reservation.CustomerReservations)
             {
-                await _dbContext.CustomerReservations.AddAsync(item);
+                _dbContext.CustomerReservations.Add(item);
             }
 
             //Mark the room as taken if it wasn't already
-            _dbContext.Rooms.FindAsync(reservation.RoomId).Result.IsAvailable = false;
+            Room room = await _dbContext.Rooms.FindAsync(reservation.RoomId);
+            room.IsAvailable = false;
+
+            //BREAKS HERE
 
             return await _dbContext.SaveChangesAsync();
         }
