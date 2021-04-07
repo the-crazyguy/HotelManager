@@ -9,25 +9,17 @@
         <input hidden asp-for="Creator" />
         <input hidden asp-for="CreatorId" />
 
-        @*TODO: Fix invalid datetime format making ModelState invalid
-            Remove hours and minutes?*@
         <div class="mb-5">
             <label>Arrival</label>
             <div class="input-group date" id="datepicker1">
-                <input asp-for="Arrival" type="text" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" />
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
+                <input asp-for="Arrival" type="datetime-local" class="form-control" value="@DateTime.Now.ToString()" />
             </div>
         </div>
 
         <div class="mb-5">
             <label>Departure</label>
             <div class="input-group date" id="datepicker2">
-                <input asp-for="Departure" type="text" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" />
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
+                <input asp-for="Departure" type="datetime-local" class="form-control" value="@DateTime.Now.ToString()"/>
             </div>
         </div>
 
@@ -41,7 +33,6 @@
             @Html.EditorFor(model => model.IsAllInclusive, new { htmlAttributes = new { @class = "ml-3" } })
         </div>
 
-        @*TODO: Fix Model.Customers is null in post*@
         <div class="mb-5">
             <label>Customers</label>
             @Html.ListBoxFor(model => model.SelectedCustomerIds, new MultiSelectList(Model.Customers, "Id", "FullName"),
@@ -61,20 +52,3 @@
         <input type="submit" value="Save" class="btn btn-primary" />
     }
 </div>
-
-@section Scripts
-{
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
-    <script>
-        $(function () {
-            $('#datepicker1').datetimepicker();
-            $('#datepicker2').datetimepicker();
-        });
-    </script>
-}

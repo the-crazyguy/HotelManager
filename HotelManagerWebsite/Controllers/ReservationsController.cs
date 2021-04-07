@@ -232,9 +232,12 @@ namespace HotelManagerWebsite.Controllers
                 }).ToList()
             };
 
+            //TODO: Fix getting stuck in _dbContext.SaveChanges()
+            //Try-catch?
+
             _reservationRepository.AddOrUpdate(reservation);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Reservations");
         }
 
         //Vacate the room but keep the reservation in the db
