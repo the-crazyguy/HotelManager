@@ -12,14 +12,20 @@
         <div class="mb-5">
             <label>Arrival</label>
             <div class="input-group date" id="datepicker1">
-                <input asp-for="Arrival" type="datetime-local" class="form-control" value="@DateTime.Now.ToString()" />
+                <input asp-for="Arrival" type="datetime-local" class="form-control" 
+                       value="@(Model.Arrival == null ? DateTime.Now.ToString() : Model.Arrival.ToString())"
+                       placeholder="@(Model.Arrival == null ? DateTime.Now.ToString() : Model.Arrival.ToString())"
+                       min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddDays(365).ToString("yyyy-MM-dd")"/>
             </div>
         </div>
 
         <div class="mb-5">
             <label>Departure</label>
             <div class="input-group date" id="datepicker2">
-                <input asp-for="Departure" type="datetime-local" class="form-control" value="@DateTime.Now.ToString()"/>
+                <input asp-for="Departure" type="datetime-local" class="form-control" 
+                       value="@(Model.Departure == null ? DateTime.Now.ToString() : Model.Departure.ToString())"
+                       placeholder="@(Model.Departure == null ? DateTime.Now.ToString() : Model.Departure.ToString())"
+                       min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddDays(365).ToString("yyyy-MM-dd")"/>
             </div>
         </div>
 
@@ -42,11 +48,6 @@
         <div class="mb-5">
             <label>Room</label>
             @Html.DropDownListFor(model => model.RoomId, new SelectList(Model.Rooms, "Id", "RoomNumber"))
-        </div>
-
-        <div class="mb-5">
-            <label>Total Sum</label>
-            @Html.EditorFor(model => model.TotalSum, new { htmlAttributes = new { @class = "ml-3" } })
         </div>
 
         <input type="submit" value="Save" class="btn btn-primary" />

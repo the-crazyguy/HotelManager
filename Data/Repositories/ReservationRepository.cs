@@ -47,8 +47,6 @@ namespace Data.Repositories
             Room room = await _dbContext.Rooms.FindAsync(reservation.RoomId);
             room.IsAvailable = false;
 
-            //BREAKS HERE
-
             return await _dbContext.SaveChangesAsync();
         }
 

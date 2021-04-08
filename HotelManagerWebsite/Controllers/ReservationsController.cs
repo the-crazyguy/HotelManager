@@ -180,7 +180,6 @@ namespace HotelManagerWebsite.Controllers
                     Departure = reservation.Departure,
                     BreakfastIncluded = reservation.BreakfastIncluded,
                     IsAllInclusive = reservation.IsAllInclusive,
-                    TotalSum = reservation.TotalSum,
                     Customers = _customerRepository.Items.Select(item => new CustomerPair()
                     {
                         Id = item.Id,
@@ -203,10 +202,12 @@ namespace HotelManagerWebsite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ReservationEditViewModel model)
         {
-            //TODO: Fix Invalid ModelState
-            if (!ModelState.IsValid)
+            //If the model state is invalid OR Arrival is earlier than now OR later than or the same date as departure, return the view for resubmission
+            if (!ModelState.IsValid ||
+                DateTime.Compare(model.Arrival, DateTime.Now) < 0 ||
+                DateTime.Compare(model.Arrival, model.Departure) >= 0)
             {
-                //Repopulate the customer and room pairs to prevent crashing
+                //Repopulate the customer and room pairs for the dropdowns/lists
                 model.Customers = _customerRepository.Items.Select(item => new CustomerPair()
                 {
                     Id = item.Id,
@@ -223,8 +224,24 @@ namespace HotelManagerWebsite.Controllers
                 return View(model);
             }
 
+            //Caluclate TotalSum
+            #region Sum Calculation
+
+            IQueryable<Customer> selectedCustomers = _customerRepository.Items.Where(item => model.SelectedCustomerIds.Contains(item.Id));
+            
+            int adults = selectedCustomers.Where(item => item.IsAdult).Count();
+            int children = selectedCustomers.Where(item => !item.IsAdult).Count();
+            double adultBedPrice = _roomRepository.Items.FirstOrDefault(room => room.Id == model.RoomId).AdultBedPrice;
+            double childBedPrice = _roomRepository.Items.FirstOrDefault(room => room.Id == model.RoomId).ChildBedPrice;
+
+            int days = (model.Departure - model.Arrival).Days;
+
+            double totalSum = CalculateTotalSum(adults, adultBedPrice, children, childBedPrice, model.IsAllInclusive, model.BreakfastIncluded, days);
+            #endregion
+
             var user = await _userManager.GetUserAsync(User);
 
+            //Make a Reservation object
             Reservation reservation = new Reservation()
             {
                 Id = model.Id,
@@ -234,7 +251,7 @@ namespace HotelManagerWebsite.Controllers
                 Departure = model.Departure,
                 BreakfastIncluded = model.BreakfastIncluded,
                 IsAllInclusive = model.IsAllInclusive,
-                TotalSum = model.TotalSum,
+                TotalSum = totalSum,
                 CustomerReservations = model.SelectedCustomerIds.Select(customerId => new CustomerReservation() 
                 {
                     CustomerId = customerId,
@@ -250,11 +267,31 @@ namespace HotelManagerWebsite.Controllers
                 oldRoomId = 0;
             }
 
-            //WARNING: The website gets stuck here
-            //TODO: Fix the problem
             await _reservationRepository.AddOrUpdate(reservation);
 
             return RedirectToAction("Index");
+        }
+
+        private double CalculateTotalSum(int adults, double adultBedPrice, int children, double childBedPrice, bool isAllInclusive, bool breakfastIncluded, int days)
+        {
+            double pricePerDayAdults = adults * adultBedPrice;
+            double pricePerDayChildren = children * childBedPrice;
+            double mealsPrice = 0;
+
+            if (breakfastIncluded && isAllInclusive == false)
+            {
+                mealsPrice = WebConstants.BreakfastPrice;
+            }
+            else if (isAllInclusive)
+            {
+                mealsPrice = WebConstants.AllMealsPrice;
+            }
+
+            double totalRoomPricePerDay = pricePerDayAdults + pricePerDayChildren + mealsPrice;
+
+            double totalSum = totalRoomPricePerDay * days;
+
+            return totalSum;
         }
 
         //Vacate the room but keep the reservation in the db

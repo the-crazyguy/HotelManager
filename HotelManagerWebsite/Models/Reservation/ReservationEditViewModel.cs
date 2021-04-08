@@ -21,6 +21,5 @@ namespace HotelManagerWebsite.Models.Reservation
         public DateTime Departure { get; set; }
         public bool BreakfastIncluded { get; set; }
         public bool IsAllInclusive { get; set; }
-        public double TotalSum { get; set; }
     }
 }
