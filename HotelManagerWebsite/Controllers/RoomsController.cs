@@ -92,24 +92,22 @@ namespace HotelManagerWebsite.Controllers
                 Capacity = room.Capacity,
                 Type = room.Type,
                 IsAvailable = room.IsAvailable,
-                Reservations = _reservationRepository.Items.Select(cr => new ReservationViewModel()
+                Reservations = _reservationRepository.Items.Where(item => item.RoomId == id).Select(cr => new ReservationViewModel()
                 {
                     Id = cr.Id,
                     CreatorId = cr.CreatorId,
-                    //Creator
                     /*Customers = _customerRepository.Items.Select(crr => new CustomerViewModel()
                     {
                         FirstName = cr.Customer.FirstName,
                         LastName = cr.Customer.LastName,
                         Email = cr.Customer.Email
                     }).ToList(),*/
+                    RoomId = cr.RoomId,
                     Arrival = cr.Arrival,
                     Departure = cr.Departure,
                     BreakfastIncluded = cr.BreakfastIncluded,
                     IsAllInclusive = cr.IsAllInclusive,
-                    TotalSum = cr.TotalSum,
-                    RoomId = cr.RoomId
-
+                    TotalSum = cr.TotalSum
                 }).ToList(),
                 AdultBedPrice = room.AdultBedPrice,
                 ChildBedPrice = room.ChildBedPrice,
