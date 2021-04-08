@@ -86,7 +86,7 @@ namespace HotelManagerWebsite
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseSession();   //TODO: Remove if sessions are not needed
+            app.UseSession();
 
             app.UseAuthentication();
             app.UseAuthorization();

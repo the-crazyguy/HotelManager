@@ -20,14 +20,12 @@ namespace Data
         {
             base.OnModelCreating(modelBuilder);
 
-            //TODO: Work out if these are correct
             //Reservation between EmpoyeeUser and Reservation
             modelBuilder.Entity<EmployeeUser>()
                 .HasMany(eu => eu.Reservations)
                 .WithOne(r => r.Creator)
                 .HasForeignKey(r => r.CreatorId);
 
-            //TODO: Should this be even here? One-to-one relationship
             //Relation between Room and Reservation
             modelBuilder.Entity<Room>()
                 .HasOne(room => room.Reservation)
@@ -51,7 +49,7 @@ namespace Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            //TODO: Create db on your own machine and paste the connection string here
+            //Create db on your own machine and paste the connection string here if needs be
             builder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=HotelDb;Integrated Security=True;MultipleActiveResultSets=true");
             builder.UseLazyLoadingProxies();
         }

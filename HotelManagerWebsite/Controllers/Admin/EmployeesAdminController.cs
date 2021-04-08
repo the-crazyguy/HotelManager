@@ -68,7 +68,6 @@ namespace HotelManagerWebsite.Controllers.Admin
                 .Skip((model.Pager.CurrentPage - 1) * model.Pager.ItemsPerPage)
                 .Take(model.Pager.ItemsPerPage);
 
-            //TODO: Add Room, Creator and Customers
             //Make viewmodels from the EmployeeUser items to show in the View
             model.Items = employeeUsers.Select(item => new EmployeeViewModel()
             {
@@ -84,10 +83,7 @@ namespace HotelManagerWebsite.Controllers.Admin
                 {
                     Id = res.Id,
                     RoomId = res.RoomId,
-                    //Room
                     CreatorId = res.CreatorId,
-                    //Creator
-                    //Customers
                     Arrival = res.Arrival,
                     Departure = res.Departure,
                     BreakfastIncluded = res.BreakfastIncluded,

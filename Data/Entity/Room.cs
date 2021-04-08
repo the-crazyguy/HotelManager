@@ -8,7 +8,7 @@ namespace Data.Entity
     public class Room : BaseEntity
     {
         public int Capacity { get; set; }
-        public string Type { get; set; }    //TODO: Make it enum
+        public string Type { get; set; }
         public bool IsAvailable { get; set; }
         public virtual Reservation Reservation { get; set; }
         public double AdultBedPrice { get; set; }

@@ -15,7 +15,6 @@ namespace HotelManagerWebsite.Models.Admin.Employee
         public string LastName { get; set; }
         public string FullName => $"{FirstName} {MiddleName} {LastName}";
         public string UserName { get; set; }
-        //TODO: Add password?
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string EGN { get; set; }
