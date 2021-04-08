@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Data.Repositories
 {
-    public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository 
+    public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
     {
         private readonly HotelDb _dbContext;
 
@@ -16,5 +16,6 @@ namespace Data.Repositories
         }
 
         public IQueryable<Customer> Items => _dbContext.Customers;
+
     }
 }

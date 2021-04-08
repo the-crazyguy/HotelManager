@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagerWebsite.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Employees")]
     public class CustomersController : Controller
     {
         private readonly ICustomerRepository _customerRepository;
@@ -36,7 +36,6 @@ namespace HotelManagerWebsite.Controllers
             #region Filter
             //2. Initialize Filter
             model.Filter = model.Filter ?? new EmployeeFilterViewModel();
-
 
             //TODO:Add more filter fields
             //3. Check if the filter is active
@@ -130,6 +129,46 @@ namespace HotelManagerWebsite.Controllers
         }
 
         [HttpGet]
+        public IActionResult EditInitial()
+        {
+            CustomerEditViewModel model;
+
+            model = new CustomerEditViewModel();
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult EditCheck(CustomerEditViewModel customerToCheck)
+        {
+            Customer customer = _customerRepository.Items.SingleOrDefault(item => item.Email == customerToCheck.Email);
+
+            CustomerEditViewModel model;
+
+            if(customer==null)
+            {
+                model = new CustomerEditViewModel()
+                {
+                    Email = customerToCheck.Email
+                };
+            }
+            else
+            {
+                model = new CustomerEditViewModel()
+                {
+                    Id = customer.Id,
+                    FirstName = customer.FirstName,
+                    LastName = customer.LastName,
+                    PhoneNumer = customer.PhoneNumber,
+                    Email = customer.Email,
+                    IsAdult = customer.IsAdult
+                };
+            }
+
+            return RedirectToAction("Edit", model);
+        }
+
+        [HttpGet]
         public IActionResult Edit(int? id)
         {
             Customer customer = _customerRepository.Items.SingleOrDefault(item => item.Id == id);
@@ -156,14 +195,16 @@ namespace HotelManagerWebsite.Controllers
             return View(model);
         }
 
-        public IActionResult Edit(CustomerEditViewModel model)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(CustomerEditViewModel model)
         {
             if(!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            _customerRepository.AddOrUpdate(new Customer()
+            await _customerRepository.AddOrUpdate(new Customer()
             {
                 Id = model.Id,
                 FirstName = model.FirstName,
@@ -176,7 +217,8 @@ namespace HotelManagerWebsite.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Delete(int id)
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
         {
             Customer customer = _customerRepository.Items.SingleOrDefault(item => item.Id == id);
 
@@ -186,7 +228,7 @@ namespace HotelManagerWebsite.Controllers
             }
             else
             {
-                _customerRepository.Delete(customer);
+                await _customerRepository.Delete(customer);
                 return RedirectToAction("Index");
             }
         }

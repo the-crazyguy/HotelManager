@@ -1,0 +1,32 @@
+﻿@model RoomViewModel
+
+<h1>Room @Model.RoomNumber</h1>
+<div>
+    <div>
+        <label>Id: </label> <span>@Model.Id</span>
+    </div>
+    <div>
+        <label>Capacity: </label> <span>@Model.Capacity</span>
+    </div>
+    <div>
+        <label>Type: </label> <span>@Model.Type</span>
+    </div>
+    <div>
+        <label>Available: </label> <span>@(Model.IsAvailable ? "✔" : "❌")</span>
+    </div>
+    <div>
+        <label>Adult Bed Price: </label> <span>@Model.AdultBedPrice</span>
+    </div>
+    <div>
+        <label>Child Bed Price: </label> <span>@Model.ChildBedPrice</span>
+    </div>
+
+    <h3>Reservations</h3>
+    <div>
+        @foreach (var item in Model.Reservations)
+        {
+            @await Html.PartialAsync("../Reservations/_ReservationPartialRoom", item);
+        }
+    </div>
+</div>
+

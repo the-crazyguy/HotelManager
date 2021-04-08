@@ -4,10 +4,7 @@
 <div class="container-fluid">
     <div class="card">
         <div class="card-header">
-            @using (Html.BeginForm("Index", "Customers", FormMethod.Get, new
-             {
-                    @class = "navbar-search"
-             }))
+            @using (Html.BeginForm("Index", "Customers", FormMethod.Get, new { @class = "navbar-search" }))
              {
                 <div class="d-flex flex-wrap ">
                     <div class="form-group mr-auto">
@@ -25,15 +22,16 @@
                     <button class="btn btn-primary">
                         Filter
                     </button>
+                    <div class="ml-auto">
+                        <a href="Customers/EditInitial"  class="btn btn-success">
+                            Create
+                        </a>
+                    </div>
                 </div>
              }
 
-            <div>
-                <a asp-action="Edit" asp-controller="Customers" class="btn btn-success">
-                    Create
-                </a>
-            </div>
         </div>
+
         <div>
             <div class="card-body table-responsive">
                 <table class="table table-bordered table-striped">

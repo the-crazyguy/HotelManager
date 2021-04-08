@@ -58,6 +58,8 @@ namespace Data.Repositories
                 _dbContext.CustomerReservations.Where(cr => cr.ReservationId == reservation.Id)
                 );
 
+            await _dbContext.SaveChangesAsync();
+
             if (reservation.Id == 0)
             {
                 //The Id is 0 so we are adding a new reservation

@@ -1,7 +1,4 @@
 ﻿@model CustomerViewModel
-@{
-    ViewData["Title"] = "Details";
-}
 
 <h1>@Model.FullName</h1>
 <div>
@@ -24,6 +21,12 @@
         <label>Adult: </label> <span>@(Model.IsAdult ? "✔" : "❌")</span>
     </div>
 
-    @*TODO:Add Partials for the Reservations*@
+    <h3>Reservations</h3>
+    <div>
+        @foreach (var item in Model.Reservations)
+        {
+            @await Html.PartialAsync("../Reservations/_ReservationPartial", item);
+        }
+    </div>
 </div>
 

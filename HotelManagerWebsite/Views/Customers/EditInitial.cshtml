@@ -1,0 +1,15 @@
+﻿@model CustomerEditViewModel
+
+<div class="container">
+    @using (Html.BeginForm("EditCheck", "Customers", FormMethod.Get, new { @class = "" }))
+    {
+        <div>
+            <label>E-mail:</label>
+            <span>
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { placeholder = "E-mail" } })
+            </span>
+        </div>
+        <input type="submit" value="Save" class="btn btn-primary" />
+    }
+</div>
+

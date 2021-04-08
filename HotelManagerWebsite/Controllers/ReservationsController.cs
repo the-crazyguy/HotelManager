@@ -107,7 +107,12 @@ namespace HotelManagerWebsite.Controllers
                     LastName = reservation.Creator.LastName
                 },
                 //TODO: TEMPORARY
-                Customers = new List<CustomerViewModel>(),
+                Customers = reservation.CustomerReservations.Select(item=> new CustomerViewModel()
+                {
+                    Id = item.CustomerId,
+                    FirstName = item.Customer.FirstName,
+                    LastName = item.Customer.LastName
+                }).ToList(),
                 Arrival = reservation.Arrival,
                 Departure = reservation.Departure,
                 BreakfastIncluded = reservation.BreakfastIncluded,

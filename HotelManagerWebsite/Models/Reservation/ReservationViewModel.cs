@@ -1,6 +1,7 @@
 ﻿using HotelManagerWebsite.Models.Admin.Employee;
 using HotelManagerWebsite.Models.Base;
 using HotelManagerWebsite.Models.Customer;
+using HotelManagerWebsite.Models.Room;
 using System;
 using System.Collections.Generic;
 using System.Linq;
