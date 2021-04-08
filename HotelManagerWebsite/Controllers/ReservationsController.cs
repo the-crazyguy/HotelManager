@@ -321,7 +321,7 @@ namespace HotelManagerWebsite.Controllers
 
         //Vacate the room and delete the reservation
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             Reservation reservation = _reservationRepository.Items.FirstOrDefault(item => item.Id == id);
 
@@ -331,7 +331,8 @@ namespace HotelManagerWebsite.Controllers
             }
 
             VacateRoom(reservation.RoomId);
-            _reservationRepository.Delete(reservation);
+
+            await _reservationRepository.Delete(reservation);
 
             return RedirectToAction("Index");
         }
