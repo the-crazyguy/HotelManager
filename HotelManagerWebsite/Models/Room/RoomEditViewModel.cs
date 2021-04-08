@@ -1,4 +1,5 @@
-﻿using HotelManagerWebsite.Models.Base;
+﻿using HotelManagerWebsite.Enums;
+using HotelManagerWebsite.Models.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,9 +14,12 @@ namespace HotelManagerWebsite.Models.Room
         [Display(Name = "Capacity")]
         public int Capacity { get; set; }
 
-        [Required(ErrorMessage = "Please enter a type for the room")]
-        [Display(Name = "Type")]
         public string Type { get; set; }
+
+        #region Fields for the dropdown
+        public ICollection<TypePair> RoomTypes { get; set; }
+        public int SelectedRoomType { get; set; }
+        #endregion
 
         [Required(ErrorMessage = "Please enter whether the room is available")]
         [Display(Name = "Available")]

@@ -128,7 +128,16 @@ namespace HotelManagerWebsite.Controllers
 
             if (room == null)
             {
-                model = new RoomEditViewModel();
+                model = new RoomEditViewModel()
+                {
+                    Id = 0,
+                    IsAvailable = true,
+                    RoomTypes = WebConstants.RoomTypes.Select(item => new TypePair()
+                    {
+                        Id = WebConstants.RoomTypes.IndexOf(item),
+                        Type = item
+                    }).ToList()
+                };
             }
             else
             {
@@ -140,7 +149,12 @@ namespace HotelManagerWebsite.Controllers
                     AdultBedPrice = room.AdultBedPrice,
                     ChildBedPrice = room.ChildBedPrice,
                     RoomNumber = room.RoomNumber,
-                    IsAvailable = room.IsAvailable
+                    IsAvailable = room.IsAvailable,
+                    RoomTypes = WebConstants.RoomTypes.Select(item => new TypePair()
+                    {
+                        Id = WebConstants.RoomTypes.IndexOf(item),
+                        Type = item
+                    }).ToList()
                 };
             }
 
@@ -154,6 +168,31 @@ namespace HotelManagerWebsite.Controllers
         {
             if (!ModelState.IsValid)
             {
+                //Redefine the roomtypes to prevent crashing
+                model.RoomTypes = WebConstants.RoomTypes.Select(item => new TypePair()
+                {
+                    Id = WebConstants.RoomTypes.IndexOf(item),
+                    Type = item
+                }).ToList();
+
+                return View(model);
+            }
+
+            string roomType;
+
+            try
+            {
+                roomType = WebConstants.RoomTypes[model.SelectedRoomType];
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                //If an unexisting index was passed, prompt the user to re-enter the form
+                model.RoomTypes = WebConstants.RoomTypes.Select(item => new TypePair()
+                {
+                    Id = WebConstants.RoomTypes.IndexOf(item),
+                    Type = item
+                }).ToList();
+
                 return View(model);
             }
 
@@ -161,7 +200,7 @@ namespace HotelManagerWebsite.Controllers
             {
                 Id = model.Id,
                 Capacity = model.Capacity,
-                Type = model.Type,
+                Type = roomType,
                 AdultBedPrice = model.AdultBedPrice,
                 ChildBedPrice = model.ChildBedPrice,
                 RoomNumber = model.RoomNumber,

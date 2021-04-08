@@ -4,6 +4,7 @@
     @using (Html.BeginForm("Edit", "Rooms", FormMethod.Post, new { @class = "" }))
     {
         <input hidden asp-for="IsAvailable"/>
+
         <div>
             <label>Room Number:</label>
             <span>
@@ -18,9 +19,7 @@
         </div>
         <div>
             <label>Type:</label>
-            <span>
-                @Html.EditorFor(model => model.Type, new { htmlAttributes = new { placeholder = "Type" } })
-            </span>
+            @Html.DropDownListFor(model => model.SelectedRoomType, new SelectList(Model.RoomTypes, "Id", "Type"))
         </div>
         <div>
             <label>Adult Bed Price:</label>
