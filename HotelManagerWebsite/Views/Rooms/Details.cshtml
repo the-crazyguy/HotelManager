@@ -23,7 +23,7 @@
 
     <h3>Reservations</h3>
     <div>
-        @foreach (var item in Model.Reservations)
+        @foreach (var item in Model.Reservations.Where(item => item.RoomId == Model.Id))
         {
             @await Html.PartialAsync("../Reservations/_ReservationPartialRoom", item);
         }

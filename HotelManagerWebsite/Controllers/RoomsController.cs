@@ -107,7 +107,8 @@ namespace HotelManagerWebsite.Controllers
                     Departure = cr.Departure,
                     BreakfastIncluded = cr.BreakfastIncluded,
                     IsAllInclusive = cr.IsAllInclusive,
-                    TotalSum = cr.TotalSum
+                    TotalSum = cr.TotalSum,
+                    RoomId = cr.RoomId
 
                 }).ToList(),
                 AdultBedPrice = room.AdultBedPrice,

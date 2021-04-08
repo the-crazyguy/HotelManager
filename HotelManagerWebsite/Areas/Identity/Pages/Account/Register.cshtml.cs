@@ -128,8 +128,8 @@ namespace HotelManagerWebsite.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-
-                    if (User.IsInRole(WebConstants.AdminRole))
+                    //The admin can add new users or the first created user will be an admin
+                    if (User.IsInRole(WebConstants.AdminRole) || _userManager.Users.Count() <= 1)
                     {
                         //An admin is logged in and they want to create a new admin user
                         await _userManager.AddToRoleAsync(user, WebConstants.AdminRole);

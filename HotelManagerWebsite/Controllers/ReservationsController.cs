@@ -57,13 +57,11 @@ namespace HotelManagerWebsite.Controllers
                 .Skip((model.Pager.CurrentPage - 1) * model.Pager.ItemsPerPage)
                 .Take(model.Pager.ItemsPerPage);
 
-            //TODO: Add Room, Creator and Customers
             //Make viewmodels from the Reservation items to show in the View
             model.Items = reservations.Select(item => new ReservationViewModel() 
             {
                 Id = item.Id,
                 RoomId = item.RoomId,
-                //Room
                 CreatorId = item.CreatorId,
                 Creator = new EmployeeViewModel()
                 {
@@ -72,7 +70,6 @@ namespace HotelManagerWebsite.Controllers
                     MiddleName = item.Creator.MiddleName,
                     LastName = item.Creator.LastName
                 },
-                //Customers
                 Arrival = item.Arrival,
                 Departure = item.Departure,
                 BreakfastIncluded = item.BreakfastIncluded,
@@ -96,8 +93,7 @@ namespace HotelManagerWebsite.Controllers
             ReservationViewModel model = new ReservationViewModel()
             {
                 Id = reservation.Id,
-                RoomId = reservation.Id,
-                //Room
+                RoomId = reservation.RoomId,
                 CreatorId = reservation.CreatorId,
                 Creator = new EmployeeViewModel()
                 {
@@ -106,7 +102,6 @@ namespace HotelManagerWebsite.Controllers
                     MiddleName = reservation.Creator.MiddleName,
                     LastName = reservation.Creator.LastName
                 },
-                //TODO: TEMPORARY
                 Customers = reservation.CustomerReservations.Select(item=> new CustomerViewModel()
                 {
                     Id = item.CustomerId,
