@@ -1,0 +1,32 @@
+﻿@model CustomerViewModel
+
+<h1>@Model.FullName</h1>
+<div>
+    <div>
+        <label>Id: </label> <span>@Model.Id</span>
+    </div>
+    <div>
+        <label>First name: </label> <span>@Model.FirstName</span>
+    </div>
+    <div>
+        <label>Last name: </label> <span>@Model.LastName</span>
+    </div>
+    <div>
+        <label>Email: </label> <span>@Model.Email</span>
+    </div>
+    <div>
+        <label>Phone number: </label> <span>@Model.PhoneNumber</span>
+    </div>
+    <div>
+        <label>Adult: </label> <span>@(Model.IsAdult ? "✔" : "❌")</span>
+    </div>
+
+    <h3>Reservations</h3>
+    <div>
+        @foreach (var item in Model.Reservations)
+        {
+            @await Html.PartialAsync("../Reservations/_ReservationPartial", item);
+        }
+    </div>
+</div>
+

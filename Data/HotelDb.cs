@@ -14,6 +14,7 @@ namespace Data
         public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<EmployeeUser> EmployeeUsers { get; set; }
+        public virtual DbSet<CustomerReservation> CustomerReservations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,10 +35,18 @@ namespace Data
                 .HasForeignKey<Reservation>(reservation => reservation.RoomId);
 
             //Relation between Reservation and Customer
-            modelBuilder.Entity<Reservation>()
-                .HasMany(reservation => reservation.Customers)
-                .WithOne(customer => customer.Reservation)
-                .HasForeignKey(customer => customer.ReservationId);
+            modelBuilder.Entity<CustomerReservation>()
+                .HasKey(cr => new { cr.CustomerId, cr.ReservationId });
+
+            modelBuilder.Entity<CustomerReservation>()
+                .HasOne(cr => cr.Customer)
+                .WithMany(c => c.CustomerReservations)
+                .HasForeignKey(cr => cr.CustomerId);
+
+            modelBuilder.Entity<CustomerReservation>()
+                .HasOne(cr => cr.Reservation)
+                .WithMany(r => r.CustomerReservations)
+                .HasForeignKey(cr => cr.ReservationId);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)

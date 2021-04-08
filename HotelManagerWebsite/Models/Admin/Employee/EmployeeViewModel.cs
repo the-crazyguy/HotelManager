@@ -1,4 +1,5 @@
 ﻿using HotelManagerWebsite.Models.Base;
+using HotelManagerWebsite.Models.Reservation;
 using System;
 using System.Collections.Generic;
 using System.Linq;

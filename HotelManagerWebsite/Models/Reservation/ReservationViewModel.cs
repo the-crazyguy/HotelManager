@@ -1,11 +1,13 @@
 ﻿using HotelManagerWebsite.Models.Admin.Employee;
 using HotelManagerWebsite.Models.Base;
+using HotelManagerWebsite.Models.Customer;
+using HotelManagerWebsite.Models.Room;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HotelManagerWebsite.Models
+namespace HotelManagerWebsite.Models.Reservation
 {
     public class ReservationViewModel : BaseViewModel
     {

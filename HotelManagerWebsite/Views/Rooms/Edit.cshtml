@@ -1,0 +1,40 @@
+﻿@model RoomEditViewModel
+
+<div class="container">
+    @using (Html.BeginForm("Edit", "Rooms", FormMethod.Post, new { @class = "" }))
+    {
+        <input hidden asp-for="IsAvailable"/>
+        <div>
+            <label>Room Number:</label>
+            <span>
+                @Html.EditorFor(model => model.RoomNumber, new { htmlAttributes = new { placeholder = "Room Number" } })
+            </span>
+        </div>
+        <div>
+            <label>Capacity:</label>
+            <span>
+                @Html.EditorFor(model => model.Capacity, new { htmlAttributes = new { placeholder = "Capacity" } })
+            </span>
+        </div>
+        <div>
+            <label>Type:</label>
+            <span>
+                @Html.EditorFor(model => model.Type, new { htmlAttributes = new { placeholder = "Type" } })
+            </span>
+        </div>
+        <div>
+            <label>Adult Bed Price:</label>
+            <span>
+                @Html.EditorFor(model => model.AdultBedPrice, new { htmlAttributes = new { placeholder = "Adult Bed Price" } })
+            </span>
+        </div>
+        <div>
+            <label>Child Bed Price:</label>
+            <span>
+                @Html.EditorFor(model => model.ChildBedPrice, new { htmlAttributes = new { placeholder = "Child Bed Price" } })
+            </span>
+        </div>
+        <input type="submit" value="Save" class="btn btn-primary" />
+    }
+</div>
+

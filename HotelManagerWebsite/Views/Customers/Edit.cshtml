@@ -1,0 +1,39 @@
+﻿@model CustomerEditViewModel
+
+<div class="container">
+    @using (Html.BeginForm("Edit", "Customers", FormMethod.Post, new { @class = "" }))
+    {
+        <div>
+            <label>First Name:</label>
+            <span>
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { placeholder = "First Name" } })
+            </span>
+        </div>
+        <div>
+            <label>Last Name:</label>
+            <span>
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { placeholder = "Last Name" } })
+            </span>
+        </div>
+        <div>
+            <label>Phone Number:</label>
+            <span>
+                @Html.EditorFor(model => model.PhoneNumer, new { htmlAttributes = new { placeholder = "Phone Number" } })
+            </span>
+        </div>
+        <div>
+            <label>E-mail:</label>
+            <span>
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { placeholder = "E-mail" } })
+            </span>
+        </div>
+        <div>
+            <label>Adult:</label>
+            <span>
+                @Html.EditorFor(model => model.IsAdult, new { htmlAttributes = new { placeholder = "Adult" } })
+            </span>
+        </div>
+        <input type="submit" value="Save" class="btn btn-primary" />
+    }
+</div>
+

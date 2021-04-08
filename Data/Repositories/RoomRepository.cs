@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Data.Repositories
 {
@@ -16,5 +17,11 @@ namespace Data.Repositories
         }
 
         public IQueryable<Room> Items => _dbContext.Rooms;
+        public override async Task<int> Add(Room item)
+        {
+            item.IsAvailable = true;
+            _dbContext.Add(item);
+            return await _dbContext.SaveChangesAsync();
+        }
     }
 }

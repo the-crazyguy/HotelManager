@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HotelManagerWebsite.Models
+namespace HotelManagerWebsite.Models.Room
 {
-    public class CustomerViewModel : BasePersonViewModel
+    public class RoomPair : BasePair
     {
+        public int RoomNumber { get; set; }
     }
 }
