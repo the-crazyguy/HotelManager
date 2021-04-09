@@ -40,8 +40,8 @@ namespace HotelManagerWebsite.Controllers
 
             //TODO:Fix Filters
             //3. Check if the filter is active
-            bool emptyCapacity = (model.Filter.Capacity<=0);
-            bool emptyType = string.IsNullOrWhiteSpace(model.Filter.Type);
+            bool emptyCapacity = (model.Filter.Capacity <= 0);
+            bool emptyType = (model.Filter.Type == null);
             bool emptyIsAvailable = !model.Filter.IsAvailable;
 
             //4. Query

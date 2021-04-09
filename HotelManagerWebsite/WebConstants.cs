@@ -12,6 +12,6 @@ namespace HotelManagerWebsite
         public static string FiredRole = "Fired";
         public static double BreakfastPrice = 12.0;
         public static double AllMealsPrice = 45.0;
-        public static List<string> RoomTypes = new List<string>() { "Single Bed", "Double bed", "Apartment", "Penthouse" };
+        public static List<string> RoomTypes = new List<string>() { "Single Bed", "Double Bed", "Apartment", "Penthouse" };
     }
 }

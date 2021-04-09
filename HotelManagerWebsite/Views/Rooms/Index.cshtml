@@ -16,7 +16,14 @@
                     <div class="form-group mr-auto">
                         <label>Type</label>
                         <span>
-                            @Html.EditorFor(model => model.Filter.Type, new { htmlAttributes = new { placeholder = "Type" } })
+                            @Html.DropDownListFor(model => model.Filter.Type, new List<SelectListItem>
+                        {
+                           new SelectListItem{Text="-none-",Value="" },
+                           new SelectListItem{Text="Single Bed",Value="Single Bed" },
+                           new SelectListItem{Text="Double Bed",Value="Double Bed" },
+                           new SelectListItem{Text="Apartment",Value="Apartment" },
+                           new SelectListItem{Text="Penthouse",Value="Penthouse" },
+                            })
                         </span>
                     </div>
                     <div class="form-group mr-auto">

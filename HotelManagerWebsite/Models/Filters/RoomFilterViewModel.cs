@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HotelManagerWebsite.Models.Room;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,9 +10,7 @@ namespace HotelManagerWebsite.Models.Filters
     {
         public int Capacity { get; set; }
         public string Type { get; set; }
+        #endregion
         public bool IsAvailable { get; set; }
-        public double AdultBedPrice { get; set; }
-        public double ChildBedPrice { get; set; }
-        public int RoomNumber { get; set; }
     }
 }
