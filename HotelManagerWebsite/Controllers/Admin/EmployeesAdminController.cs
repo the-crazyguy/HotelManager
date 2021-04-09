@@ -192,17 +192,72 @@ namespace HotelManagerWebsite.Controllers.Admin
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Update(string id)
         {
-            return NotFound();
-        }
+            EmployeeUser user = await _userManager.FindByIdAsync(id);
 
+            if (user == null)
+            {
+                //If the user wasn't found, return to index
+                return RedirectToAction("Index");
+            }
+
+            EmployeeEditViewModel model = new EmployeeEditViewModel()
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                MiddleName = user.MiddleName,
+                LastName = user.LastName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                EGN = user.EGN,
+                Hired = user.Hired,
+                IsActive = user.IsActive,
+                Fired = user.Fired,
+                Reservations = user.Reservations
+            };
+
+            return View(model);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(EmployeeEditViewModel model)
+        public async Task<IActionResult> Update(EmployeeEditViewModel model)
         {
-            return NotFound();
+            EmployeeUser user = await _userManager.FindByIdAsync(model.Id);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("", "User not found");
+                return View(model);
+            }
+
+            user.FirstName = model.FirstName;
+            user.MiddleName = model.MiddleName;
+            user.LastName = model.LastName;
+            user.Email = model.Email;
+            user.UserName = model.Email;
+            user.EGN = model.EGN;
+            user.Hired = model.Hired;
+            user.IsActive = model.IsActive;
+            user.Fired = model.Fired;
+            user.Reservations = model.Reservations;
+            user.PasswordHash = _passwordHasher.HashPassword(user, model.Password);
+
+            IdentityResult result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(model);
+            }
         }
 
         [HttpGet]
