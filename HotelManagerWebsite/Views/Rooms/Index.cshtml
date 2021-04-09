@@ -34,6 +34,21 @@
                     </div>
                 </div>
 
+                <div class="d-flex flex-wrap align-content-around justify-content-center">
+                    <label>Items per page: </label>
+                    <div class="d-flex">
+                        <span>
+                            @Html.DropDownListFor(model => model.Pager.ItemsPerPage, new List<SelectListItem>
+                            {
+                               new SelectListItem{Text="10",Value="10" },
+                               new SelectListItem{Text="25",Value="25" },
+                               new SelectListItem{Text="50",Value="50" }
+                            },
+                            new { @onchange = "form.submit()" })
+                        </span>
+                    </div>
+                </div>
+
                 <div class="d-flex flex-wrap">
                     <button class="btn btn-primary">
                         Filter
@@ -96,12 +111,13 @@
                 @for (int i = 1; i <= Model.Pager.Pages; i++)
                 {
                     <li class="page-item @(i == Model.Pager.CurrentPage ? "active" : "")">
-                        <a asp-route-Pager.CurrentPage="@i"
+                        <a asp-route-Filter.Capacity="@Model.Filter.Capacity"
+                           asp-route-Filter.Type="@Model.Filter.Type"
+                           asp-route-Filter.IsAvailable="@Model.Filter.IsAvailable"
+                           asp-route-Pager.CurrentPage="@i"
                            class="page-link">@i</a>
                     </li>
-                } @*asp-route-Filter.Capacity="@Model.Filter.Capacity"
-                    asp-route-Filter.Type="@Model.Filter.Type"
-                    asp-route-Filter.IsAvailable="@Model.Filter.IsAvailable"*@
+                } 
             </ul>
         </div>
     </div>
