@@ -291,7 +291,7 @@ namespace HotelManagerWebsite.Controllers
 
         //Vacate the room but keep the reservation in the db
         [HttpGet]
-        public IActionResult MarkAsDone(int id)
+        public async Task<IActionResult> MarkAsDone(int id)
         {
             Reservation reservation = _reservationRepository.Items.FirstOrDefault(item => item.Id == id);
 
@@ -300,12 +300,12 @@ namespace HotelManagerWebsite.Controllers
                 return NotFound();
             }
 
-            VacateRoom(reservation.RoomId);
+            await VacateRoom(reservation.RoomId);
 
             return RedirectToAction("Index");
         }
 
-        private void VacateRoom(int roomId)
+        private async Task VacateRoom(int roomId)
         {
             Room room = _roomRepository.Items.FirstOrDefault(item => item.Id == roomId);
 
@@ -316,7 +316,7 @@ namespace HotelManagerWebsite.Controllers
 
             room.IsAvailable = true;
 
-            _roomRepository.Update(room);
+            await _roomRepository.Update(room);
         }
 
         //Vacate the room and delete the reservation
@@ -330,7 +330,7 @@ namespace HotelManagerWebsite.Controllers
                 return NotFound();
             }
 
-            VacateRoom(reservation.RoomId);
+            await VacateRoom(reservation.RoomId);
 
             await _reservationRepository.Delete(reservation);
 
