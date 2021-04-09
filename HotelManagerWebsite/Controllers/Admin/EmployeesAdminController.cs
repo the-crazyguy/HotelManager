@@ -20,11 +20,13 @@ namespace HotelManagerWebsite.Controllers.Admin
     {
         private readonly UserManager<EmployeeUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IPasswordHasher<EmployeeUser> _passwordHasher;
 
-        public EmployeesAdminController(UserManager<EmployeeUser> userManager, RoleManager<IdentityRole> roleManager)
+        public EmployeesAdminController(UserManager<EmployeeUser> userManager, RoleManager<IdentityRole> roleManager, IPasswordHasher<EmployeeUser> passwordHasher)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _passwordHasher = passwordHasher;
         }
 
         [HttpGet]
@@ -137,6 +139,54 @@ namespace HotelManagerWebsite.Controllers.Admin
                 IsActive = employeeUser.IsActive,
                 Fired = employeeUser.Fired
             };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(EmployeeEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                EmployeeUser user = new EmployeeUser()
+                {
+                    FirstName = model.FirstName,
+                    MiddleName = model.MiddleName,
+                    LastName = model.LastName,
+                    UserName = model.Email,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    EGN = model.EGN,
+                    Hired = DateTime.Now,
+                    Reservations = new List<Reservation>(),
+                    IsActive = true
+                };
+
+                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    //Assign role
+                    EmployeeUser createdUser = await _userManager.FindByEmailAsync(user.Email);
+                    await _userManager.AddToRoleAsync(createdUser, WebConstants.EmployeeRole);
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
+            }
 
             return View(model);
         }

@@ -12,9 +12,6 @@ namespace HotelManagerWebsite.Models.Admin.Employee
     //TODO: Rework or remove
     public class EmployeeEditViewModel : BasePersonViewModel
     {
-        [Required(ErrorMessage = "Please enter a username for the employee")]
-        public string Username { get; set; }
-
         [Required(ErrorMessage = "Please enter a password for the employee")]
         public string Password { get; set; }
 

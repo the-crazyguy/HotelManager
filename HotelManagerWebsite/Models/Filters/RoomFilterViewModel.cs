@@ -10,7 +10,6 @@ namespace HotelManagerWebsite.Models.Filters
     {
         public int Capacity { get; set; }
         public string Type { get; set; }
-        #endregion
         public bool IsAvailable { get; set; }
     }
 }
