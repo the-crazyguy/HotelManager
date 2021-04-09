@@ -12,21 +12,23 @@
         <div class="mb-5">
             <label>Arrival</label>
             <div class="input-group date" id="datepicker1">
-                <input asp-for="Arrival" type="datetime-local" class="form-control" 
+                <input asp-for="Arrival" type="datetime-local" class="form-control"
                        value="@(Model.Arrival == null ? DateTime.Now.ToString() : Model.Arrival.ToString())"
                        placeholder="@(Model.Arrival == null ? DateTime.Now.ToString() : Model.Arrival.ToString())"
-                       min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddDays(365).ToString("yyyy-MM-dd")"/>
+                       min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddDays(365).ToString("yyyy-MM-dd")" />
             </div>
+            <span asp-validation-for="Arrival" class="text-danger"></span>
         </div>
 
         <div class="mb-5">
             <label>Departure</label>
             <div class="input-group date" id="datepicker2">
-                <input asp-for="Departure" type="datetime-local" class="form-control" 
+                <input asp-for="Departure" type="datetime-local" class="form-control"
                        value="@(Model.Departure == null ? DateTime.Now.ToString() : Model.Departure.ToString())"
                        placeholder="@(Model.Departure == null ? DateTime.Now.ToString() : Model.Departure.ToString())"
-                       min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddDays(365).ToString("yyyy-MM-dd")"/>
+                       min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddDays(365).ToString("yyyy-MM-dd")" />
             </div>
+            <span asp-validation-for="Departure" class="text-danger"></span>
         </div>
 
         <div class="mb-5">
@@ -51,5 +53,8 @@
         </div>
 
         <input type="submit" value="Save" class="btn btn-primary" />
+        <a asp-action="Index" asp-controller="Reservations" class="btn btn-info">
+            Back
+        </a>
     }
 </div>
