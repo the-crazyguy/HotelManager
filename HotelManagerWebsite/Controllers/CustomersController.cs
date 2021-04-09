@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HotelManagerWebsite.Controllers
 {
-    [Authorize(Roles = "Admin,Employees")]
+    [Authorize(Roles = "Admin,Employee")]
     public class CustomersController : Controller
     {
         private readonly ICustomerRepository _customerRepository;

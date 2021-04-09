@@ -43,7 +43,11 @@ namespace HotelManagerWebsite
                 .AddDefaultTokenProviders()
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<HotelDb>();
-            services.AddRazorPages();
+            services.AddRazorPages().AddMvcOptions(options =>
+            {
+                options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
+                    _ => "The field is required.");
+            }); ;
 
             services.Configure<IdentityOptions>(options =>
             {

@@ -3,7 +3,7 @@
 <div class="container">
     @using (Html.BeginForm("Edit", "Rooms", FormMethod.Post, new { @class = "" }))
     {
-        <input hidden asp-for="IsAvailable"/>
+        <input hidden asp-for="IsAvailable" />
 
         <div>
             <label>Room Number:</label>
@@ -11,12 +11,14 @@
                 @Html.EditorFor(model => model.RoomNumber, new { htmlAttributes = new { placeholder = "Room Number" } })
             </span>
         </div>
+        <span asp-validation-for="RoomNumber" class="text-danger"></span>
         <div>
             <label>Capacity:</label>
             <span>
                 @Html.EditorFor(model => model.Capacity, new { htmlAttributes = new { placeholder = "Capacity" } })
             </span>
         </div>
+        <span asp-validation-for="Capacity" class="text-danger"></span>
         <div>
             <label>Type:</label>
             @Html.DropDownListFor(model => model.SelectedRoomType, new SelectList(Model.RoomTypes, "Id", "Type"))
@@ -27,13 +29,18 @@
                 @Html.EditorFor(model => model.AdultBedPrice, new { htmlAttributes = new { placeholder = "Adult Bed Price" } })
             </span>
         </div>
+        <span asp-validation-for="AdultBedPrice" class="text-danger"></span>
         <div>
             <label>Child Bed Price:</label>
             <span>
                 @Html.EditorFor(model => model.ChildBedPrice, new { htmlAttributes = new { placeholder = "Child Bed Price" } })
             </span>
         </div>
-        <input type="submit" value="Save" class="btn btn-primary" />
+        <span asp-validation-for="ChildBedPrice" class="text-danger"></span>
+        <br><input type="submit" value="Save" class="btn btn-primary" />
+        <a asp-action="Index" asp-controller="Rooms" class="btn btn-info">
+            Back
+        </a>
     }
 </div>
 
