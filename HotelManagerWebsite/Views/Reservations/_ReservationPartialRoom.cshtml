@@ -1,7 +1,7 @@
 ﻿@model ReservationViewModel
 
 <div>
-    <label>Id: </label> <span>@Model.Id</span>
+    <label><strong>Id: </strong></label> <span><strong>@Model.Id</strong></span>
 </div>
 <div>
     <a asp-controller="Reservations" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary">Go to reservation</a>
