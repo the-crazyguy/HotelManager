@@ -8,13 +8,13 @@
             {
                 <div class="d-flex flex-wrap ">
                     <div class="form-group mr-auto">
-                        <label>Capacity</label>
+                        <label class="mr-2">Capacity</label>
                         <span>
                             @Html.EditorFor(model => model.Filter.Capacity, new { htmlAttributes = new { placeholder = "Capacity" } })
                         </span>
                     </div>
                     <div class="form-group mr-auto">
-                        <label>Type</label>
+                        <label class="mr-2">Type</label>
                         <span>
                             @Html.DropDownListFor(model => model.Filter.Type, new List<SelectListItem>
                         {
@@ -53,13 +53,13 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>RoomNumber</th>
-                            <th>Capacity</th>
-                            <th>Type</th>
-                            <th>Available</th>
-                            <th>Adult Bed Price</th>
-                            <th>Child Bed Price</th>
-                            <th>Actions</th>
+                            <th class="align-middle text-center">RoomNumber</th>
+                            <th class="align-middle text-center">Capacity</th>
+                            <th class="align-middle text-center">Type</th>
+                            <th class="align-middle text-center">Available</th>
+                            <th class="align-middle text-center">Adult Bed Price</th>
+                            <th class="align-middle text-center">Child Bed Price</th>
+                            <th class="align-middle text-center">Actions</th>
                         </tr>
                     </thead>
 
@@ -67,13 +67,13 @@
                         @foreach (var item in Model.Items)
                         {
                             <tr>
-                                <td class="text-nowrap align-middle">@item.RoomNumber</td>
-                                <td class="text-nowrap align-middle">@item.Capacity</td>
-                                <td class="align-middle">@item.Type</td>
+                                <td class="text-center text-nowrap align-middle">@item.RoomNumber</td>
+                                <td class="text-center text-nowrap align-middle">@item.Capacity</td>
+                                <td class="text-center align-middle">@item.Type</td>
                                 @*HACK: putting unicode/hex/html code, html entity and css code does not work with the ternary operator*@
                                 <td class="text-center align-middle">@(item.IsAvailable ? "✔" : "❌")</td>
-                                <td class="text-nowrap align-middle">@item.AdultBedPrice</td>
-                                <td class="text-nowrap align-middle">@item.ChildBedPrice</td>
+                                <td class="text-center text-nowrap align-middle">@item.AdultBedPrice.ToString("F")</td>
+                                <td class="text-center text-nowrap align-middle">@item.ChildBedPrice.ToString("F")</td>
                                 <td>
                                     <div class="d-flex flex-wrap justify-content-center">
                                         <a asp-controller="Rooms" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info m-1">Details</a>
