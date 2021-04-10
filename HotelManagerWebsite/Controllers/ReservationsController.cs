@@ -3,12 +3,14 @@ using Data.Repositories;
 using HotelManagerWebsite.Models;
 using HotelManagerWebsite.Models.Admin.Employee;
 using HotelManagerWebsite.Models.Customer;
+using HotelManagerWebsite.Models.Filters;
 using HotelManagerWebsite.Models.Reservation;
 using HotelManagerWebsite.Models.Room;
 using HotelManagerWebsite.Models.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,17 +47,30 @@ namespace HotelManagerWebsite.Controllers
             model.Pager.ItemsPerPage = model.Pager.ItemsPerPage <= 0 ? 10 : model.Pager.ItemsPerPage;
             #endregion
 
-            //2. Get Reservations from db
-            IQueryable<Reservation> reservations = _reservationRepository.Items;
+            //2. Filter
+            model.Filter = model.Filter ?? new ReservationFilterViewModel();
 
-            //3. Build view model objects
+            //Check for empty filters
+            bool emptyCreatorName = string.IsNullOrWhiteSpace(model.Filter.CreatorName);
+            bool emptyAfterDate = model.Filter.AfterDate == null;
+            bool emptyBeforeDate = model.Filter.BeforeDate == null;
+
+            //3. Get Reservations from db
+            List<Reservation> reservations = _reservationRepository.Items.Include("CustomerReservations").AsEnumerable()
+                .Where(item =>
+                //Get all reservations whose Arrival date is between the after and before filters
+                ((emptyAfterDate || Nullable.Compare<DateTime>(item.Arrival, model.Filter.AfterDate) >= 0) && (emptyBeforeDate || Nullable.Compare<DateTime>(item.Arrival, model.Filter.BeforeDate) <= 0)) &&
+                (emptyCreatorName || item.Creator.FullName.Contains(model.Filter.CreatorName))
+                ).ToList();
+
+            //4. Build view model objects
             //Calculate total pages
             model.Pager.Pages = (int)Math.Ceiling((double)reservations.Count() / model.Pager.ItemsPerPage);
 
             //Calculate which reservations to show on the current page
             reservations = reservations.OrderBy(item => item.Id)
                 .Skip((model.Pager.CurrentPage - 1) * model.Pager.ItemsPerPage)
-                .Take(model.Pager.ItemsPerPage);
+                .Take(model.Pager.ItemsPerPage).ToList();   //TODO: Remove .ToList()
 
             //Make viewmodels from the Reservation items to show in the View
             model.Items = reservations.Select(item => new ReservationViewModel() 

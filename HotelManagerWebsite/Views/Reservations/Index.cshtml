@@ -4,12 +4,45 @@
 <div class="container-fluid">
     <div class="card">
         <div class="card-header">
+            @using (Html.BeginForm("Index", "Reservations", FormMethod.Get, new { @class = "navbar-search" }))
+            {
+                <div class="d-flex flex-wrap align-content-around">
+                    <div class="form-group mr-auto">
+                        @Html.EditorFor(model => model.Filter.CreatorName, new { htmlAttributes = new { placeholder = "Creator Name" } })
+                    </div>
+                    <div>
+                        <label>After</label>
+                        <div class="input-group date" id="datepicker1">
+                            <input asp-for="Filter.AfterDate" type="datetime-local" class="" />
+                        </div>
+                    </div>
+                    <div>
+                        <label>Before</label>
+                        <div class="input-group date" id="datepicker1">
+                            <input asp-for="Filter.BeforeDate" type="datetime-local"  class="" />
+                        </div>
+                    </div>
+                </div>
 
-            <div class="float-right">
-                <a asp-action="Edit" asp-controller="Reservations" class="btn btn-success">
-                    Create
-                </a>
-            </div>
+                <div class="d-flex flex-wrap">
+                    <button class="btn btn-primary mx-2">
+                        Filter
+                    </button>
+                    <div class="mx-2">
+                        <a asp-action="Index" asp-controller="Reservations" class="btn btn-info">
+                            Reset
+                        </a>
+                    </div>
+
+                    <div class="float-right mx-2">
+                        <a asp-action="Edit" asp-controller="Reservations" class="btn btn-success">
+                            Create
+                        </a>
+                    </div>
+                </div>
+                
+            }
+
         </div>
 
         <div class="card-body table-responsive">
@@ -57,7 +90,11 @@
                 @for (int i = 1; i <= Model.Pager.Pages; i++)
                 {
                     <li class="page-item @(i == Model.Pager.CurrentPage ? "active" : "")">
-                        <a asp-route-Pager.CurrentPage="@i" class="page-link">@i</a>
+                        <a asp-route-Pager.CurrentPage="@i"
+                           asp-route-Filter.CreatorName="@Model.Filter.CreatorName"
+                           asp-route-Filter.AfterDate="@Model.Filter.AfterDate"
+                           asp-route-Filter.BeforeDate="@Model.Filter.BeforeDate"
+                           class="page-link">@i</a>
                     </li>
                 }
             </ul>
