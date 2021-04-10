@@ -37,11 +37,11 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Adult</th>
-                            <th>Reservations</th>
-                            <th>Actions</th>
+                            <th class="align-middle text-center">Name</th>
+                            <th class="align-middle text-center">Email</th>
+                            <th class="align-middle text-center">Adult</th>
+                            <th class="align-middle text-center">Reservations</th>
+                            <th class="align-middle text-center">Actions</th>
                         </tr>
                     </thead>
 
@@ -49,8 +49,8 @@
                         @foreach (var item in Model.Items)
                         {
                             <tr>
-                                <td class="text-nowrap align-middle">@item.FullName</td>
-                                <td class="align-middle">@item.Email</td>
+                                <td class="text-center text-nowrap align-middle">@item.FullName</td>
+                                <td class="text-center align-middle">@item.Email</td>
                                 @*HACK: putting unicode/hex/html code, html entity and css code does not work with the ternary operator*@
                                 <td class="text-center align-middle">@(item.IsAdult ? "✔" : "❌")</td>
                                 <td class="text-center align-middle">@(item.Reservations != null ? item.Reservations.Count() : 0)</td>

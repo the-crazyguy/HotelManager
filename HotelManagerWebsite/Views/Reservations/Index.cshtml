@@ -67,11 +67,11 @@
                     @foreach (var item in Model.Items)
                     {
                         <tr>
-                            <td class="text-nowrap align-middle">@item.Id</td>
+                            <td class="text-nowrap align-middle text-center">@item.Id</td>
                             <td class="text-nowrap align-middle text-center">
                                 <a asp-action="Details" asp-controller="Rooms" asp-route-id="@item.RoomId">@item.RoomId</a>
                             </td>
-                            <td class="text-nowrap align-middle text-center text">@item.Creator.FullName</td>
+                            <td class="text-nowrap align-middle text-center">@item.Creator.FullName</td>
                             <td class="text-nowrap align-middle text-center">@item.Arrival.ToShortDateString()</td>
                             <td class="text-nowrap align-middle text-center">@item.Departure.ToShortDateString()</td>
                             <td class="text-nowrap align-middle text-center">@item.TotalSum.ToString("F")</td>
