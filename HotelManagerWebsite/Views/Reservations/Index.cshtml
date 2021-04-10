@@ -8,19 +8,19 @@
             {
                 <div class="d-flex flex-wrap">
                     <div class="form-group col-lg-4">
-                        <label>Creator</label>
+                        <label><strong>Creator</strong></label>
                         <div>
                             @Html.EditorFor(model => model.Filter.CreatorName, new { htmlAttributes = new { placeholder = "Creator Name" } })
                         </div>
                     </div>
                     <div class="form-group col-lg-4">
-                        <label>After</label>
+                        <label><strong>After</strong></label>
                         <div class="input-group date" id="datepicker1">
                             <input asp-for="Filter.AfterDate" type="datetime-local" class="" />
                         </div>
                     </div>
                     <div class="form-group col-lg-4">
-                        <label>Before</label>
+                        <label><strong>Before</strong></label>
                         <div class="input-group date" id="datepicker1">
                             <input asp-for="Filter.BeforeDate" type="datetime-local" class="" />
                         </div>
@@ -74,7 +74,7 @@
                             <td class="text-nowrap align-middle text-center text">@item.Creator.FullName</td>
                             <td class="text-nowrap align-middle text-center">@item.Arrival.ToShortDateString()</td>
                             <td class="text-nowrap align-middle text-center">@item.Departure.ToShortDateString()</td>
-                            <td class="text-nowrap align-middle text-center">@item.TotalSum</td>
+                            <td class="text-nowrap align-middle text-center">@item.TotalSum.ToString("F")</td>
                             <td>
                                 <div class="d-flex flex-wrap justify-content-center">
                                     <a asp-controller="Reservations" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info m-1">Details</a>

@@ -27,18 +27,18 @@
     <label>All Inclusive: </label> <span>@(Model.IsAllInclusive ? "✔" : "❌")</span>
 </div>
 <div>
-    <label>Total Sum: </label> <span>@Model.TotalSum</span>
+    <label>Total Sum: </label> <span>@Model.TotalSum.ToString("F")</span>
 </div>
 
-<h3>Customers</h3>
-<div>
+<h3 class="mt-3">Customers:</h3>
+<div class="d-flex flex-column">
     @foreach (var item in Model.Customers)
     {
-        <div>
+        <div class="mb-2">
             <a asp-action="Details" asp-controller="Customers" asp-route-id="@item.Id">@item.FullName</a>
         </div>
     }
 </div>
-<a asp-action="Index" asp-controller="Reservations" class="btn btn-info">
+<a asp-action="Index" asp-controller="Reservations" class="btn btn-info mt-3">
     Back
 </a>

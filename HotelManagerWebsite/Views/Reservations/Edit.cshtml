@@ -9,10 +9,10 @@
         <input hidden asp-for="Creator" />
         <input hidden asp-for="CreatorId" />
 
-        <div class="mb-5">
+        <div class="mb-3">
             <label>Arrival</label>
             <div class="input-group date" id="datepicker1">
-                <input asp-for="Arrival" type="datetime-local" class="form-control"
+                <input asp-for="Arrival" type="datetime-local" class="form-control col-md-5"
                        value="@(Model.Arrival == null ? DateTime.Now.ToString() : Model.Arrival.ToString())"
                        placeholder="@(Model.Arrival == null ? DateTime.Now.ToString() : Model.Arrival.ToString())"
                        min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddDays(365).ToString("yyyy-MM-dd")" />
@@ -20,10 +20,10 @@
             <span asp-validation-for="Arrival" class="text-danger"></span>
         </div>
 
-        <div class="mb-5">
+        <div class="mb-3">
             <label>Departure</label>
             <div class="input-group date" id="datepicker2">
-                <input asp-for="Departure" type="datetime-local" class="form-control"
+                <input asp-for="Departure" type="datetime-local" class="form-control col-md-5"
                        value="@(Model.Departure == null ? DateTime.Now.ToString() : Model.Departure.ToString())"
                        placeholder="@(Model.Departure == null ? DateTime.Now.ToString() : Model.Departure.ToString())"
                        min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddDays(365).ToString("yyyy-MM-dd")" />
@@ -31,20 +31,22 @@
             <span asp-validation-for="Departure" class="text-danger"></span>
         </div>
 
-        <div class="mb-5">
+        <div class="mb-3">
             <label>Breakfast Included</label>
             @Html.EditorFor(model => model.BreakfastIncluded, new { htmlAttributes = new { @class = "ml-3" } })
         </div>
 
-        <div class="mb-5">
+        <div class="mb-3">
             <label>All Inclusive</label>
             @Html.EditorFor(model => model.IsAllInclusive, new { htmlAttributes = new { @class = "ml-3" } })
         </div>
 
-        <div class="mb-5">
-            <label>Customers</label>
-            @Html.ListBoxFor(model => model.SelectedCustomerIds, new MultiSelectList(Model.Customers, "Id", "FullName"),
-           new { htmlAttributes = new { multiple = "multiple" } })
+        <div class="mb-3">
+            <div class="d-flex flex-column">
+                <label class="mr-2">Customers</label>
+                @Html.ListBoxFor(model => model.SelectedCustomerIds, new MultiSelectList(Model.Customers, "Id", "FullName"),
+               new { @class = "col-md-2 px-0", htmlAttributes = new { multiple = "multiple" } })
+            </div>
         </div>
 
         <div class="mb-5">
@@ -52,9 +54,13 @@
             @Html.DropDownListFor(model => model.RoomId, new SelectList(Model.Rooms, "Id", "RoomNumber"))
         </div>
 
-        <input type="submit" value="Save" class="btn btn-primary" />
-        <a asp-action="Index" asp-controller="Reservations" class="btn btn-info">
-            Back
-        </a>
+        <div class="d-flex flex-wrap flex-column">
+            <input type="submit" value="Save" class="btn btn-primary col-md-4 mb-2" />
+
+            <a asp-action="Index" asp-controller="Reservations" class="btn btn-info col-md-1">
+                Back
+            </a>
+        </div>
+
     }
 </div>
