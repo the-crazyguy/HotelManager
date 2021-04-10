@@ -13,23 +13,13 @@ namespace HotelManagerWebsite.Models.Admin.Employee
     public class EmployeeEditViewModel
     {
         public string Id { get; set; }
-
-        [Required(ErrorMessage = "Please enter a first name for the employee")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Please enter a middle name for the employee")]
+        [Required(ErrorMessage = "Please enter a middlename for the employee")]
         public string MiddleName { get; set; }
         public string FullName => $"{FirstName} {MiddleName} {LastName}";
-
-        [Required(ErrorMessage = "Please enter a last name for the employee")]
         public string LastName { get; set; }
-
-        [Phone(ErrorMessage = "Please enter a valid phone number for the employee")]
-        [MinLength(10)]
-        [MaxLength(10)]
         public string PhoneNumber { get; set; }
-
-        [EmailAddress(ErrorMessage = "Please enter a valid email for the employee")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Please enter a password for the employee")]
