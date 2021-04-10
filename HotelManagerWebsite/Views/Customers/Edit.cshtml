@@ -1,5 +1,9 @@
 ﻿@model CustomerEditViewModel
 
+@{
+    ViewData["Title"] = "Customer Edit";
+}
+
 <div class="container">
     @using (Html.BeginForm("Edit", "Customers", FormMethod.Post, new { @class = "" }))
     {
@@ -35,7 +39,7 @@
             <a asp-action="Index" asp-controller="Customers" class="btn btn-info col-md-1">
                 Back
             </a>
-        </div>   
+        </div>
     }
 </div>
 

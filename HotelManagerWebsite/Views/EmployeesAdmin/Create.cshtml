@@ -1,5 +1,10 @@
 ﻿@model EmployeeEditViewModel
 
+@{
+    ViewData["Title"] = "Employee Create";
+}
+
+
 <div class="container">
     @using (Html.BeginForm("Create", "EmployeesAdmin", FormMethod.Post, new { @class = "" }))
     {

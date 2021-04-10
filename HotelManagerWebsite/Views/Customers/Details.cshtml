@@ -1,5 +1,9 @@
 ﻿@model CustomerViewModel
 
+@{
+    ViewData["Title"] = "Customer "+ @Model.Email + " Details";
+}
+
 <h1>@Model.FullName</h1>
 <div>
     <div>
