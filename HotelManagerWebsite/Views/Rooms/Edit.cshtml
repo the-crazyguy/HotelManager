@@ -6,41 +6,45 @@
         <input hidden asp-for="IsAvailable" />
 
         <div>
-            <label>Room Number:</label>
+            <label class="mr-2">Room Number:</label>
             <span>
                 @Html.EditorFor(model => model.RoomNumber, new { htmlAttributes = new { placeholder = "Room Number" } })
             </span>
         </div>
         <span asp-validation-for="RoomNumber" class="text-danger"></span>
         <div>
-            <label>Capacity:</label>
+            <label class="mr-2">Capacity:</label>
             <span>
                 @Html.EditorFor(model => model.Capacity, new { htmlAttributes = new { placeholder = "Capacity" } })
             </span>
         </div>
         <span asp-validation-for="Capacity" class="text-danger"></span>
         <div>
-            <label>Type:</label>
+            <label class="mr-2">Type:</label>
             @Html.DropDownListFor(model => model.SelectedRoomType, new SelectList(Model.RoomTypes, "Id", "Type"))
         </div>
         <div>
-            <label>Adult Bed Price:</label>
+            <label class="mr-2">Adult Bed Price:</label>
             <span>
                 @Html.EditorFor(model => model.AdultBedPrice, new { htmlAttributes = new { placeholder = "Adult Bed Price" } })
             </span>
         </div>
         <span asp-validation-for="AdultBedPrice" class="text-danger"></span>
         <div>
-            <label>Child Bed Price:</label>
+            <label class="mr-2">Child Bed Price:</label>
             <span>
                 @Html.EditorFor(model => model.ChildBedPrice, new { htmlAttributes = new { placeholder = "Child Bed Price" } })
             </span>
         </div>
         <span asp-validation-for="ChildBedPrice" class="text-danger"></span>
-        <br><input type="submit" value="Save" class="btn btn-primary" />
-        <a asp-action="Index" asp-controller="Rooms" class="btn btn-info">
-            Back
-        </a>
+        
+        <div class="d-flex flex-wrap flex-column mt-3">
+            <input type="submit" value="Save" class="btn btn-primary col-md-4 mb-2" />
+            <a asp-action="Index" asp-controller="Rooms" class="btn btn-info col-md-1">
+                Back
+            </a>
+        </div>
+        
     }
 </div>
 

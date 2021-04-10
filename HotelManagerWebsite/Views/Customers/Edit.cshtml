@@ -3,44 +3,39 @@
 <div class="container">
     @using (Html.BeginForm("Edit", "Customers", FormMethod.Post, new { @class = "" }))
     {
-        <div>
-            <label>First Name:</label>
-            <span>
-                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { placeholder = "First Name" } })
-            </span>
+        @if (Model.Id != 0)
+        {
+            <h2>@Model.FirstName @Model.LastName</h2>
+        }
+        <div class="d-flex flex-wrap flex-column mt-5">
+            <div class="mb-3">
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "col-md-4 px-2", placeholder = "First Name" } })
+            </div>
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+            <div class="mb-3">
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "col-md-4 px-2", placeholder = "Last Name" } })
+            </div>
+            <span asp-validation-for="LastName" class="text-danger"></span>
+            <div class="mb-3">
+                @Html.EditorFor(model => model.PhoneNumer, new { htmlAttributes = new { @class = "col-md-4 px-2", placeholder = "Phone Number" } })
+            </div>
+            <span asp-validation-for="PhoneNumer" class="text-danger"></span>
+            <div class="mb-3">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "col-md-4 px-2", placeholder = "E-mail" } })
+            </div>
+            <span asp-validation-for="Email" class="text-danger"></span>
+            <div class="mb-3">
+                <label class="mr-2">Adult</label>
+                @Html.EditorFor(model => model.IsAdult)
+            </div>
         </div>
-        <span asp-validation-for="FirstName" class="text-danger"></span>
-        <div>
-            <label>Last Name:</label>
-            <span>
-                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { placeholder = "Last Name" } })
-            </span>
-        </div>
-        <span asp-validation-for="LastName" class="text-danger"></span>
-        <div>
-            <label>Phone Number:</label>
-            <span>
-                @Html.EditorFor(model => model.PhoneNumer, new { htmlAttributes = new { placeholder = "Phone Number" } })
-            </span>
-        </div>
-        <span asp-validation-for="PhoneNumer" class="text-danger"></span>
-        <div>
-            <label>E-mail:</label>
-            <span>
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { placeholder = "E-mail" } })
-            </span>
-        </div>
-        <span asp-validation-for="Email" class="text-danger"></span>
-        <div>
-            <label>Adult:</label>
-            <span>
-                @Html.EditorFor(model => model.IsAdult, new { htmlAttributes = new { placeholder = "Adult" } })
-            </span>
-        </div>
-        <input type="submit" value="Save" class="btn btn-primary" />
-        <a asp-action="Index" asp-controller="Customers" class="btn btn-info">
-            Back
-        </a>
+
+        <div class="d-flex flex-wrap flex-column">
+            <input type="submit" value="Save" class="btn btn-primary col-md-4 mb-2" />
+            <a asp-action="Index" asp-controller="Customers" class="btn btn-info col-md-1">
+                Back
+            </a>
+        </div>   
     }
 </div>
 

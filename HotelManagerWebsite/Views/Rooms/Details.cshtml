@@ -15,20 +15,22 @@
         <label>Available: </label> <span>@(Model.IsAvailable ? "✔" : "❌")</span>
     </div>
     <div>
-        <label>Adult Bed Price: </label> <span>@Model.AdultBedPrice</span>
+        <label>Adult Bed Price: </label> <span>@Model.AdultBedPrice.ToString("F")</span>
     </div>
     <div>
-        <label>Child Bed Price: </label> <span>@Model.ChildBedPrice</span>
+        <label>Child Bed Price: </label> <span>@Model.ChildBedPrice.ToString("F")</span>
     </div>
 
-    <h3>Reservations</h3>
-    <div>
+    <h3 class="my-4">Reservations:</h3>
+    <div class="d-flex flex-wrap">
         @foreach (var item in Model.Reservations)
         {
-            @await Html.PartialAsync("../Reservations/_ReservationPartialRoom", item);
+            <div class="card mr-auto p-4">
+                @await Html.PartialAsync("../Reservations/_ReservationPartialRoom", item)
+            </div>
         }
     </div>
-    <a asp-action="Index" asp-controller="Rooms" class="btn btn-info">
+    <a asp-action="Index" asp-controller="Rooms" class="btn btn-info mt-3">
         Back
     </a>
 </div>

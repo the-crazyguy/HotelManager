@@ -58,13 +58,13 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>Hired</th>
-                        <th>Name</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Active</th>
-                        <th>Reservations</th>
-                        <th>Actions</th>
+                        <th class="align-middle text-center">Hired</th>
+                        <th class="align-middle text-center">Name</th>
+                        <th class="align-middle text-center">Username</th>
+                        <th class="align-middle text-center">Email</th>
+                        <th class="align-middle text-center">Active</th>
+                        <th class="align-middle text-center">Reservations</th>
+                        <th class="align-middle text-center">Actions</th>
                     </tr>
                 </thead>
 
@@ -72,10 +72,10 @@
                     @foreach (var item in Model.Items)
                     {
                         <tr>
-                            <td class="text-nowrap align-middle">@item.Hired.ToShortDateString()</td>
-                            <td class="text-nowrap align-middle">@item.FullName</td>
-                            <td class="overflow-auto align-middle">@item.UserName</td>
-                            <td class="align-middle">@item.Email</td>
+                            <td class="text-center text-nowrap align-middle">@item.Hired.ToShortDateString()</td>
+                            <td class="text-center text-nowrap align-middle">@item.FullName</td>
+                            <td class="text-center overflow-auto align-middle">@item.UserName</td>
+                            <td class="text-center align-middle">@item.Email</td>
                             @*HACK: putting unicode/hex/html code, html entity and css code does not work with the ternary operator*@
                             <td class="text-center align-middle">@(item.IsActive ? "✔" : "❌")</td>
                             <td class="text-center align-middle">@item.Reservations.Count()</td>

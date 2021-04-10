@@ -3,16 +3,16 @@
 <div class="container">
     @using (Html.BeginForm("EditCheck", "Customers", FormMethod.Get, new { @class = "" }))
     {
-        <div>
-            <label>E-mail:</label>
-            <span>
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { placeholder = "E-mail" } })
-            </span>
+        <div class="mb-3 mt-5">
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "col-md-4 px-2", placeholder = "E-mail" } })
         </div>
-        <input type="submit" value="Save" class="btn btn-primary" />
-        <a asp-action="Index" asp-controller="Customers" class="btn btn-info">
-            Back
-        </a>
+
+        <div class="d-flex flex-wrap flex-column">
+            <input type="submit" value="Check" class="btn btn-primary col-md-4 mb-2" />
+            <a asp-action="Index" asp-controller="Customers" class="btn btn-info col-md-1">
+                Back
+            </a>
+        </div>   
     }
 </div>
 

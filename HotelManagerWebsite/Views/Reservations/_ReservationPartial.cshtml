@@ -1,13 +1,13 @@
 ﻿@model ReservationViewModel
 
 <div>
-    <label>Id: </label> <span>@Model.Id</span>
+    <label><strong>Id: </strong></label> <span><strong>@Model.Id</strong></span>
 </div>
 <div>
     <a asp-controller="Reservations" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary">Go to reservation</a>
 </div>
 <div>
-    <label>Room Id: </label> <span></span>
+    <label>Room Id: </label> <span>@Model.RoomId</span>
 </div>
 <div>
     <a asp-controller="Rooms" asp-action="Details" asp-route-id="@Model.RoomId" class="btn btn-primary">Go to room</a> 
@@ -19,6 +19,6 @@
     <label>Departure: </label> <span>@Model.Departure.ToString("d")</span>
 </div>
 <div>
-    <label>Total Sum: </label> <span>$@Model.TotalSum</span>
+    <label>Total Sum: </label> <span>$@Model.TotalSum.ToString("F")</span>
 </div>
 
