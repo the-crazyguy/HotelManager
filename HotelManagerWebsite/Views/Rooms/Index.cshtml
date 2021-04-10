@@ -1,5 +1,9 @@
 ﻿@model RoomIndexViewModel
 
+@{
+    ViewData["Title"] = "Rooms";
+}
+
 <h1>Rooms</h1>
 <div class="container-fluid">
     <div class="card">
@@ -117,7 +121,7 @@
                            asp-route-Pager.CurrentPage="@i"
                            class="page-link">@i</a>
                     </li>
-                } 
+                }
             </ul>
         </div>
     </div>

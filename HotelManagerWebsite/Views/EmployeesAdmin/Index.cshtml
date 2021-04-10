@@ -1,44 +1,48 @@
 ﻿@model EmployeeIndexViewModel
 
+@{
+    ViewData["Title"] = "Employees";
+}
+
 <h1>Employees</h1>
 <div class="container-fluid">
     <div class="card">
         <div class="card-header">
             @using (Html.BeginForm("Index", "EmployeesAdmin", FormMethod.Get, new { @class = "navbar-search" }))
             {
-            <div class="d-flex flex-wrap align-content-around">
-                <div class="form-group mr-auto">
-                    @Html.EditorFor(model => model.Filter.FirstName, new { htmlAttributes = new { placeholder = "First Name" } })
-                </div>
-                <div class="form-group mr-auto">
-                    @Html.EditorFor(model => model.Filter.MiddleName, new { htmlAttributes = new { placeholder = "Middle Name" } })
-                </div>
-                <div class="form-group mr-auto">
-                    @Html.EditorFor(model => model.Filter.LastName, new { htmlAttributes = new { placeholder = "Last Name" } })
-                </div>
-                <div class="form-group mr-auto">
-                    @Html.EditorFor(model => model.Filter.Username, new { htmlAttributes = new { placeholder = "Username" } })
-                </div>
-                <div class="form-group mr-auto">
-                    @Html.EditorFor(model => model.Filter.Email, new { htmlAttributes = new { placeholder = "Email" } })
-                </div>
-
-                <div class="d-flex flex-wrap align-content-around justify-content-center">
-                    <label>Items per page: </label>
-                    <div class="d-flex">
-                        <span>
-                            @Html.DropDownListFor(model => model.Pager.ItemsPerPage, new List<SelectListItem>
-                            {
-                               new SelectListItem{Text="10",Value="10" },
-                               new SelectListItem{Text="25",Value="25" },
-                               new SelectListItem{Text="50",Value="50" }
-                            },
-                            new { @onchange = "form.submit()" })
-                        </span>
+                <div class="d-flex flex-wrap align-content-around">
+                    <div class="form-group mr-auto">
+                        @Html.EditorFor(model => model.Filter.FirstName, new { htmlAttributes = new { placeholder = "First Name" } })
                     </div>
-                </div>
+                    <div class="form-group mr-auto">
+                        @Html.EditorFor(model => model.Filter.MiddleName, new { htmlAttributes = new { placeholder = "Middle Name" } })
+                    </div>
+                    <div class="form-group mr-auto">
+                        @Html.EditorFor(model => model.Filter.LastName, new { htmlAttributes = new { placeholder = "Last Name" } })
+                    </div>
+                    <div class="form-group mr-auto">
+                        @Html.EditorFor(model => model.Filter.Username, new { htmlAttributes = new { placeholder = "Username" } })
+                    </div>
+                    <div class="form-group mr-auto">
+                        @Html.EditorFor(model => model.Filter.Email, new { htmlAttributes = new { placeholder = "Email" } })
+                    </div>
 
-            </div>
+                    <div class="d-flex flex-wrap align-content-around justify-content-center">
+                        <label>Items per page: </label>
+                        <div class="d-flex">
+                            <span>
+                                @Html.DropDownListFor(model => model.Pager.ItemsPerPage, new List<SelectListItem>
+                                {
+                                   new SelectListItem{Text="10",Value="10" },
+                                   new SelectListItem{Text="25",Value="25" },
+                                   new SelectListItem{Text="50",Value="50" }
+                                },
+                                new { @onchange = "form.submit()" })
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
                 <div class="d-flex flex-wrap">
                     <button class="btn btn-primary">
                         Filter
@@ -110,7 +114,7 @@
                     }
                 </ul>
             </div>
-            
+
         </div>
     </div>
 </div>

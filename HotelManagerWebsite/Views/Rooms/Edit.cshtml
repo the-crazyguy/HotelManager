@@ -1,5 +1,9 @@
 ﻿@model RoomEditViewModel
 
+@{
+    ViewData["Title"] = "Room Edit";
+}
+
 <div class="container">
     @using (Html.BeginForm("Edit", "Rooms", FormMethod.Post, new { @class = "" }))
     {
@@ -37,14 +41,14 @@
             </span>
         </div>
         <span asp-validation-for="ChildBedPrice" class="text-danger"></span>
-        
+
         <div class="d-flex flex-wrap flex-column mt-3">
             <input type="submit" value="Save" class="btn btn-primary col-md-4 mb-2" />
             <a asp-action="Index" asp-controller="Rooms" class="btn btn-info col-md-1">
                 Back
             </a>
         </div>
-        
+
     }
 </div>
 
