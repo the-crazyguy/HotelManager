@@ -20,11 +20,13 @@ namespace HotelManagerWebsite.Controllers.Admin
     {
         private readonly UserManager<EmployeeUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IPasswordHasher<EmployeeUser> _passwordHasher;
 
-        public EmployeesAdminController(UserManager<EmployeeUser> userManager, RoleManager<IdentityRole> roleManager)
+        public EmployeesAdminController(UserManager<EmployeeUser> userManager, RoleManager<IdentityRole> roleManager, IPasswordHasher<EmployeeUser> passwordHasher)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _passwordHasher = passwordHasher;
         }
 
         [HttpGet]
@@ -142,17 +144,120 @@ namespace HotelManagerWebsite.Controllers.Admin
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public IActionResult Create()
         {
-            return NotFound();
+            return View();
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(EmployeeEditViewModel model)
+        public async Task<IActionResult> Create(EmployeeEditViewModel model)
         {
-            return NotFound();
+            if (ModelState.IsValid)
+            {
+                EmployeeUser user = new EmployeeUser()
+                {
+                    FirstName = model.FirstName,
+                    MiddleName = model.MiddleName,
+                    LastName = model.LastName,
+                    UserName = model.Email,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    EGN = model.EGN,
+                    Hired = DateTime.Now,
+                    Reservations = new List<Reservation>(),
+                    IsActive = true
+                };
+
+                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    //Assign role
+                    EmployeeUser createdUser = await _userManager.FindByEmailAsync(user.Email);
+                    await _userManager.AddToRoleAsync(createdUser, WebConstants.EmployeeRole);
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(string id)
+        {
+            EmployeeUser user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                //If the user wasn't found, return to index
+                return RedirectToAction("Index");
+            }
+
+            EmployeeEditViewModel model = new EmployeeEditViewModel()
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                MiddleName = user.MiddleName,
+                LastName = user.LastName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                EGN = user.EGN,
+                Hired = user.Hired,
+                IsActive = user.IsActive,
+                Fired = user.Fired,
+                Reservations = user.Reservations
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(EmployeeEditViewModel model)
+        {
+            EmployeeUser user = await _userManager.FindByIdAsync(model.Id);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("", "User not found");
+                return View(model);
+            }
+
+            user.FirstName = model.FirstName;
+            user.MiddleName = model.MiddleName;
+            user.LastName = model.LastName;
+            user.Email = model.Email;
+            user.UserName = model.Email;
+            user.EGN = model.EGN;
+            user.Hired = model.Hired;
+            user.IsActive = model.IsActive;
+            user.Fired = model.Fired;
+            user.Reservations = model.Reservations;
+            user.PasswordHash = _passwordHasher.HashPassword(user, model.Password);
+
+            IdentityResult result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(model);
+            }
         }
 
         [HttpGet]

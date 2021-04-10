@@ -1,0 +1,52 @@
+﻿@model EmployeeEditViewModel
+
+<div class="container">
+    @using (Html.BeginForm("Update", "EmployeesAdmin", FormMethod.Post, new { @class = "" }))
+    {
+        <input hidden asp-for="Id" />
+        <input hidden asp-for="Hired" />
+        <input hidden asp-for="IsActive" />
+        <input hidden asp-for="Fired" />
+
+        <div class="d-flex flex-wrap flex-column">
+            <div>
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { placeholder = "First name" } })
+            </div>
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+            <div>
+                @Html.EditorFor(model => model.MiddleName, new { htmlAttributes = new { placeholder = "Middle name" } })
+
+            </div>
+            <span asp-validation-for="MiddleName" class="text-danger"></span>
+            <div>
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { placeholder = "Last name" } })
+            </div>
+            <span asp-validation-for="LastName" class="text-danger"></span>
+            <div>
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { placeholder = "Email" } })
+            </div>
+            <span asp-validation-for="Email" class="text-danger"></span>
+            <div>
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { placeholder = "Password", type = "password" } })
+            </div>
+            <span asp-validation-for="Password" class="text-danger"></span>
+            <div>
+                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { placeholder = "Phone number" } })
+            </div>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+            <div>
+                @Html.EditorFor(model => model.EGN, new { htmlAttributes = new { placeholder = "EGN" } })
+            </div>
+            <span asp-validation-for="EGN" class="text-danger"></span>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Update
+        </button>
+        <a asp-action="Index" asp-controller="EmployeesAdmin" class="btn btn-info">
+            Back
+        </a>
+    }
+</div>

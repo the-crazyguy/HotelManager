@@ -6,30 +6,45 @@
         <div class="card-header">
             @using (Html.BeginForm("Index", "EmployeesAdmin", FormMethod.Get, new { @class = "navbar-search" }))
             {
-                <div class="d-flex flex-wrap align-content-around">
-                    <div class="form-group mr-auto">
-                        @Html.EditorFor(model => model.Filter.FirstName, new { htmlAttributes = new { placeholder = "First Name" } })
-                    </div>
-                    <div class="form-group mr-auto">
-                        @Html.EditorFor(model => model.Filter.MiddleName, new { htmlAttributes = new { placeholder = "Middle Name" } })
-                    </div>
-                    <div class="form-group mr-auto">
-                        @Html.EditorFor(model => model.Filter.LastName, new { htmlAttributes = new { placeholder = "Last Name" } })
-                    </div>
-                    <div class="form-group mr-auto">
-                        @Html.EditorFor(model => model.Filter.Username, new { htmlAttributes = new { placeholder = "Username" } })
-                    </div>
-                    <div class="form-group mr-auto">
-                        @Html.EditorFor(model => model.Filter.Email, new { htmlAttributes = new { placeholder = "Email" } })
+            <div class="d-flex flex-wrap align-content-around">
+                <div class="form-group mr-auto">
+                    @Html.EditorFor(model => model.Filter.FirstName, new { htmlAttributes = new { placeholder = "First Name" } })
+                </div>
+                <div class="form-group mr-auto">
+                    @Html.EditorFor(model => model.Filter.MiddleName, new { htmlAttributes = new { placeholder = "Middle Name" } })
+                </div>
+                <div class="form-group mr-auto">
+                    @Html.EditorFor(model => model.Filter.LastName, new { htmlAttributes = new { placeholder = "Last Name" } })
+                </div>
+                <div class="form-group mr-auto">
+                    @Html.EditorFor(model => model.Filter.Username, new { htmlAttributes = new { placeholder = "Username" } })
+                </div>
+                <div class="form-group mr-auto">
+                    @Html.EditorFor(model => model.Filter.Email, new { htmlAttributes = new { placeholder = "Email" } })
+                </div>
+
+                <div class="d-flex flex-wrap align-content-around justify-content-center">
+                    <label>Items per page: </label>
+                    <div class="d-flex">
+                        <span>
+                            @Html.DropDownListFor(model => model.Pager.ItemsPerPage, new List<SelectListItem>
+                            {
+                               new SelectListItem{Text="10",Value="10" },
+                               new SelectListItem{Text="25",Value="25" },
+                               new SelectListItem{Text="50",Value="50" }
+                            },
+                            new { @onchange = "form.submit()" })
+                        </span>
                     </div>
                 </div>
 
+            </div>
                 <div class="d-flex flex-wrap">
                     <button class="btn btn-primary">
                         Filter
                     </button>
                     <div class="ml-auto">
-                        <a asp-action="Edit" asp-controller="EmployeesAdmin" class="btn btn-success">
+                        <a asp-action="Create" asp-controller="EmployeesAdmin" class="btn btn-success">
                             Create
                         </a>
                     </div>
@@ -67,7 +82,7 @@
                             <td>
                                 <div class="d-flex flex-wrap justify-content-center">
                                     <a asp-controller="EmployeesAdmin" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info m-1">Details</a>
-                                    <a asp-controller="EmployeesAdmin" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary m-1">Edit</a>
+                                    <a asp-controller="EmployeesAdmin" asp-action="Update" asp-route-id="@item.Id" class="btn btn-primary m-1">Update</a>
                                     <a asp-controller="EmployeesAdmin" asp-action="Fire" asp-route-id="@item.Id" class="btn btn-danger m-1">Fire</a>
                                 </div>
                             </td>
@@ -77,21 +92,25 @@
             </table>
         </div>
 
-        <div class="d-flex flex-wrap justify-content-center">
-            <ul class="pagination">
-                @for (int i = 1; i <= Model.Pager.Pages; i++)
-                {
-                    <li class="page-item @(i == Model.Pager.CurrentPage ? "active" : "")">
-                        <a asp-route-Filter.FirstName="@Model.Filter.FirstName"
-                           asp-route-Filter.MiddleName="@Model.Filter.MiddleName"
-                           asp-route-Filter.LastName="@Model.Filter.LastName"
-                           asp-route-Filter.Username="@Model.Filter.Username"
-                           asp-route-Filter.Email="@Model.Filter.Email"
-                           asp-route-Pager.CurrentPage="@i"
-                           class="page-link">@i</a>
-                    </li>
-                }
-            </ul>
+        <div>
+            <div class="d-flex flex-wrap justify-content-center">
+                <ul class="pagination">
+                    @for (int i = 1; i <= Model.Pager.Pages; i++)
+                    {
+                        <li class="page-item @(i == Model.Pager.CurrentPage ? "active" : "")">
+                            <a asp-route-Filter.FirstName="@Model.Filter.FirstName"
+                               asp-route-Filter.MiddleName="@Model.Filter.MiddleName"
+                               asp-route-Filter.LastName="@Model.Filter.LastName"
+                               asp-route-Filter.Username="@Model.Filter.Username"
+                               asp-route-Filter.Email="@Model.Filter.Email"
+                               asp-route-Pager.CurrentPage="@i"
+                               asp-route-Pager.ItemsPerPage="@Model.Pager.ItemsPerPage"
+                               class="page-link">@i</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+            
         </div>
     </div>
 </div>

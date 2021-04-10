@@ -1,17 +1,9 @@
 ﻿@model EmployeeEditViewModel
 
-<h1>Edit</h1>
-
 <div class="container">
-    @using (Html.BeginForm("Edit", "EmployeesAdmin", FormMethod.Post, new { @class = "" }))
+    @using (Html.BeginForm("Create", "EmployeesAdmin", FormMethod.Post, new { @class = "" }))
     {
         <div class="d-flex flex-wrap flex-column">
-            @*HACK: no other way to pass these values to the VM in the POST version of the Edit method in the controller*@
-            <input hidden asp-for="Id" />
-            <input hidden asp-for="Hired" />
-            <input hidden asp-for="IsActive" />
-            <input hidden asp-for="Fired" />
-
             <div>
                 @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { placeholder = "First name" } })
             </div>
@@ -30,25 +22,23 @@
             </div>
             <span asp-validation-for="Email" class="text-danger"></span>
             <div>
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { placeholder = "Password", type = "password" } })
+            </div>
+            <span asp-validation-for="Password" class="text-danger"></span>
+            <div>
                 @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { placeholder = "Phone number" } })
             </div>
             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            <div>
-                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { placeholder = "Username" } })
-            </div>
-            <span asp-validation-for="Username" class="text-danger"></span>
+
             <div>
                 @Html.EditorFor(model => model.EGN, new { htmlAttributes = new { placeholder = "EGN" } })
             </div>
             <span asp-validation-for="EGN" class="text-danger"></span>
-            <div>
-                <label>@(Model.IsActive ? "YES" : "NO")</label>
-            </div>
 
         </div>
 
-        <button class="btn btn-primary">
-            Save
+        <button type="submit" class="btn btn-primary">
+            Create
         </button>
         <a asp-action="Index" asp-controller="EmployeesAdmin" class="btn btn-info">
             Back
