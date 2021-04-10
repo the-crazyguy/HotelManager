@@ -49,11 +49,15 @@
                     <button class="btn btn-primary">
                         Filter
                     </button>
-                    <div class="ml-auto">
-                        <a asp-action="Edit" asp-controller="Rooms" class="btn btn-success">
-                            Create
-                        </a>
-                    </div>
+                    @if (User.IsInRole(WebConstants.AdminRole))
+                    {
+                        <div class="ml-auto">
+                            <a asp-action="Edit" asp-controller="Rooms" class="btn btn-success">
+                                Create
+                            </a>
+                        </div>
+                    }
+
                 </div>
             }
         </div>
