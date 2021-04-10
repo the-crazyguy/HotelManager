@@ -1,8 +1,30 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@if (!User.IsInRole(WebConstants.EmployeeRole) && !User.IsInRole(WebConstants.AdminRole))
+{
+    <div class="text-center">
+        <h1 class="display-4">Welcome to HotelManager</h1>
+        <p>In order to make reservations first you have to <a href="/Identity/Account/Register">register</a></p>
+        <p>Already have an account? <a href="/Identity/Account/Login">Log In</a> and start making reservations now!</p>
+    </div>
+}
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@if (User.IsInRole(WebConstants.EmployeeRole) || User.IsInRole(WebConstants.AdminRole))
+{
+    <div class="text-center">
+        <h1 class="display-4">Welcome to HotelManager</h1>
+    </div>
+    <div class="d-flex flex-wrap justify-content-center text-center">
+        <p>
+            <a href="/Customers" class="btn btn-info m-2" role="button">Go to Customers table</a>
+            <a href="/Rooms" class="btn btn-info m-2" role="button">Go to Rooms table</a>
+            <a href="/Reservations" class="btn btn-info m-2" role="button">Go to Reservations table</a>
+            @if (User.IsInRole(WebConstants.AdminRole))
+            {
+                <a href="/EmployeesAdmin" class="btn btn-info m-2" role="button">Go to Employees table</a>
+                <a href="/Identity/Account/Register" class="btn btn-info m-2" role="button">Go to Create Admin User</a>
+            }
+        </p>
+    </div>
+}

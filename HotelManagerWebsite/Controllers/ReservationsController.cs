@@ -258,7 +258,7 @@ namespace HotelManagerWebsite.Controllers
             if (oldRoomId != 0 && oldRoomId != reservation.RoomId)
             {
                 //Vacate the room that was previously assigned to this reservation
-                VacateRoom(oldRoomId);
+                await VacateRoom(oldRoomId);
                 oldRoomId = 0;
             }
 

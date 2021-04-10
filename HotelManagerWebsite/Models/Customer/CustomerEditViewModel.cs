@@ -17,7 +17,8 @@ namespace HotelManagerWebsite.Models.Customer
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        [Required(ErrorMessage = "Please enter a phone number for the customer")]
+        //[Required(ErrorMessage = "Please enter a phone number for the customer")]
+        [Phone(ErrorMessage = "Please enter a 10 digit phone number")]
         [MinLength(10)]
         [MaxLength(10)]
         [Display(Name = "Phone Number")]

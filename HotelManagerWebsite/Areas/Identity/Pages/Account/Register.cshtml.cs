@@ -133,7 +133,6 @@ namespace HotelManagerWebsite.Areas.Identity.Pages.Account
                     {
                         //An admin is logged in and they want to create a new admin user
                         await _userManager.AddToRoleAsync(user, WebConstants.AdminRole);
-
                     }
                     else
                     {
